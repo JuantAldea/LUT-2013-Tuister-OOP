@@ -6,9 +6,10 @@ import java.io.InputStreamReader;
 
 import client.ClientController;
 
-public class GUI extends Thread {
+public class GUI implements Runnable {
 	private ClientController controller = null;
 	private BufferedReader stdIn = null;
+	private boolean active = true;
 	
 	public GUI(ClientController controller) {
 		this.controller = controller;
@@ -20,41 +21,34 @@ public class GUI extends Thread {
 
 	@Override
 	public void run() {
-		String answer = "";
+		String input = "";
 		
-		while(Thread.interrupted() != true){
+		while(this.active){
 			try {
-				if (this.stdIn.ready()){
-					answer = this.stdIn.readLine();
-					System.out.println("DIDN'T READ LOL " + answer);
-				}
+				//if (this.stdIn.ready()){
+					input = this.stdIn.readLine();
+					this.controller.processInput(input);
+//				} else {
+//					Thread.sleep(100);
+//				}
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			} /*catch (InterruptedException e) {
+				e.printStackTrace();
+			}*/
 		}
 	}
-
-
-	public String askUser() {
-		String answer = "";
-		System.out.print("Username: ");
-		try {
-			answer = this.stdIn.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return answer;
+	
+	public void printHelp() {
+		System.out.println("lolz immahelp"); // TODO
+		
+		String help = "register <username> <password> -> Adds a new user in the system." +
+					  "login <username> <password> -> Access with an existing username and password.";
+		
+		System.out.println(help);
 	}
-
-
-	public String askPassword() {
-		String answer = "";
-		System.out.print("Password: ");
-		try {
-			answer = this.stdIn.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return answer;
+	
+	public void deactivate() {
+		this.active = false;
 	}
 }

@@ -15,7 +15,7 @@ import javax.xml.bind.JAXBException;
 import common.Message;
 import common.User;
 
-public class ClientController {
+public class ClientController implements Runnable {
 	private String host = "127.0.0.1";
 	private int port = 1234;
 	
@@ -27,29 +27,57 @@ public class ClientController {
 	
 	public ClientController(){
 		this.gui = new GUI(this);
-		this.gui.start();
+		this.gui.run();
 		
 		this.client = new ClientModel();
-	}
-
-	private void connect() {
-		String user = this.gui.askUser();
-		String password = this.gui.askPassword();
 		
 		try {
 			this.socket = SocketChannel.open(new InetSocketAddress(host, port));
 			this.socket.configureBlocking(false);
-			
-			this.sendToServer(Message.generateMessage("jelouz", new User(user, password).toXML()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void processInput(String input) {
+		String[] inputSplit = input.split(" ");
+		
+		if (inputSplit[0] == "register"){
+			if (inputSplit.length == 3){
+				this.register(inputSplit[1], inputSplit[2]);
+			} else {
+				this.gui.printHelp();
+			}
+		} else if (inputSplit[0] == "login"){
+			if (inputSplit.length == 3){
+				this.login(inputSplit[1], inputSplit[2]);
+			} else {
+				this.gui.printHelp();
+			}
+		} else if (inputSplit[0] == "exit"){
+			this.gui.deactivate();
+			// TODO Exit
+		}
+	}
 
-		} catch (UnknownHostException e) {
+	public void register(String user, String password) {
+		try {
+			this.sendToServer(Message.generateMessage("register", new User(user, password).toXML()));
+		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void login(String user, String password) {
+		try {
+			this.sendToServer(Message.generateMessage("login", new User(user, password).toXML()));
 		} catch (JAXBException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
 	}
 	
 	private void sendToServer(String string) throws IOException {
@@ -63,9 +91,23 @@ public class ClientController {
 		}
 		System.out.println("enviado");
 	}
+
+	public void exit() {
+		this.gui.deactivate();
+	}
+	
+	public void wakeUp() {
+		
+	}
+	
+	@Override
+	public void run() {
+		
+		
+	}
 	
 	public static void main(String[] args) {
 		ClientController controller = new ClientController();
-		controller.connect();
+		controller.run();
 	}
 }
