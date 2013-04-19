@@ -12,13 +12,14 @@ public class GUI extends Thread {
 	
 	public GUI(ClientController controller) {
 		this.controller = controller;
+		this.stdIn = new BufferedReader(new InputStreamReader(System.in));
+		
 		System.out.println("Welcome blablabla");
 	}
 
 
 	@Override
 	public void run() {
-		this.stdIn = new BufferedReader(new InputStreamReader(System.in));
 		String answer = "";
 		
 		while(Thread.interrupted() != true){
