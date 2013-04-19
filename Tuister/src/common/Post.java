@@ -18,5 +18,4 @@ public class Post {
         this.id = id;
         this.date = new Date();
     }
-
 }
