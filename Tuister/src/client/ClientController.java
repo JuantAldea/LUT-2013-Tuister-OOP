@@ -12,7 +12,7 @@ import java.nio.channels.SocketChannel;
 import javax.xml.bind.JAXBException;
 
 import common.LoginPDU;
-import common.User;
+import common.RegisterPDU;
 
 public class ClientController implements Runnable {
 	private String host = "127.0.0.1";
