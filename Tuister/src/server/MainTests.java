@@ -16,10 +16,10 @@ public class MainTests {
         JAXBContext context = JAXBContext.newInstance(User.class);
         Marshaller m = context.createMarshaller();
         User user = new User("asd", "dsa");
-        m.marshal(user, writer);   
+        m.marshal(user, writer);
         Unmarshaller um = context.createUnmarshaller();
-        User user2 = (User)um.unmarshal(new StringReader(writer.toString()));
-        
+        User user2 = (User) um.unmarshal(new StringReader(writer.toString()));
+
         System.out.println(user2.toString());
     }
 }
