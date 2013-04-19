@@ -11,6 +11,7 @@ import java.nio.channels.SocketChannel;
 
 import javax.xml.bind.JAXBException;
 
+import common.LoginPDU;
 import common.User;
 
 public class ClientController implements Runnable {
@@ -60,7 +61,7 @@ public class ClientController implements Runnable {
 
 	public void register(String user, String password) {
 		try {
-			this.sendToServer(Message.generateMessage("register", new User(user, password).toXML()));
+			this.sendToServer(new RegisterPDU(user, password).toXML());
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -70,7 +71,7 @@ public class ClientController implements Runnable {
 	
 	public void login(String user, String password) {
 		try {
-			this.sendToServer(Message.generateMessage("login", new User(user, password).toXML()));
+			this.sendToServer(new LoginPDU(user, password).toXML());
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
