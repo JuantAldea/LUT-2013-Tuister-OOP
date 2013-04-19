@@ -11,7 +11,6 @@ import java.nio.channels.SocketChannel;
 
 import javax.xml.bind.JAXBException;
 
-import common.Message;
 import common.User;
 
 public class ClientController implements Runnable {
