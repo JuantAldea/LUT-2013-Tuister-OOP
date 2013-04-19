@@ -4,7 +4,6 @@ import gui.GUI;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.Selector;
@@ -38,7 +37,7 @@ public class ClientController implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void processInput(String input) {
 		String[] inputSplit = input.split(" ");
 		
