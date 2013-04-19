@@ -26,8 +26,7 @@ public class ServerState extends State {
         if (listJoke.size() == 0) {
             return "";
         }
-        String pollaca = listJoke.get(((int) Math.floor(Math.random() * 10)) % listJoke.size());
-        return pollaca;
+        return listJoke.get(((int) Math.floor(Math.random() * 10)) % listJoke.size());
     }
 
     public synchronized void startServer() {
