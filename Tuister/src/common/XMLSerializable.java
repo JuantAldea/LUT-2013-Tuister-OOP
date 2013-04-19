@@ -33,14 +33,13 @@ public class XMLSerializable {
         return xml;
     }
 
-    protected static XMLSerializable XMLParseUser(String xml) throws JAXBException {
+    protected static XMLSerializable XMLParse(String xml) throws JAXBException {
         if (XMLSerializable.stringreader == null) {
             XMLSerializable.stringreader = new StringReader(xml);
         }
         
         if (XMLSerializable.jaxbcontext == null) {
-            XMLSerializable.jaxbcontext = JAXBContext.newInstance(new Object() {
-            }.getClass().getEnclosingClass());
+            XMLSerializable.jaxbcontext = JAXBContext.newInstance(new Object() {}.getClass().getEnclosingClass());
         }
         
         if (XMLSerializable.unmarshaller == null) {

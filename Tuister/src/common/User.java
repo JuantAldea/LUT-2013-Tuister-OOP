@@ -30,6 +30,6 @@ public class User extends XMLSerializable {
     }
 
     public static User XMLParseUser(String xml) throws JAXBException {
-        return (User) XMLSerializable.XMLParseUser(xml);
+        return (User) XMLSerializable.XMLParse(xml);
     }
 }

@@ -29,6 +29,6 @@ public class Post extends XMLSerializable {
     }
 
     public static Post XMLParseUser(String xml) throws JAXBException {
-        return (Post) XMLSerializable.XMLParseUser(xml);
+        return (Post) XMLSerializable.XMLParse(xml);
     }
 }
