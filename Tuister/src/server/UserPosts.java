@@ -2,7 +2,8 @@ package server;
 import java.util.Hashtable;
 import java.util.LinkedHashSet;
 
-import server.User;
+import common.User;
+
 
 public class UserPosts {
     protected Hashtable<User, LinkedHashSet<String>> posts;

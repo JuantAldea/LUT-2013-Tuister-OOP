@@ -2,7 +2,6 @@ package common;
 
 import java.util.Date;
 
-import server.User;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

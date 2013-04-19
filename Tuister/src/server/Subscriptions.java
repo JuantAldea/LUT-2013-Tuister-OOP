@@ -3,6 +3,8 @@ package server;
 import java.util.HashSet;
 import java.util.Hashtable;
 
+import common.User;
+
 public class Subscriptions {
 
     protected Hashtable<User, HashSet<User>> subscriptions;
