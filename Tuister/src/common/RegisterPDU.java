@@ -9,11 +9,10 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "pdu")
+@XmlRootElement(name = "register")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RegisterPDU {
     protected static JAXBContext  jaxbcontext  = null;
@@ -21,17 +20,20 @@ public class RegisterPDU {
     protected static Unmarshaller unmarshaller = null;
     protected static StringWriter stringwriter = null;
     protected static StringReader stringreader = null;
-    @XmlAttribute(name = "type")
-    protected static String       type         = "register";
-    @XmlElement(name = "user")
-    protected User                user;
+
+    @XmlAttribute(name = "username")
+    protected String              username;
+
+    @XmlAttribute(name = "password")
+    protected String              password;
 
     @SuppressWarnings("unused")
     private RegisterPDU() {
     }
 
-    public RegisterPDU(User user) {
-        this.user = user;
+    public RegisterPDU(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String toXML() throws JAXBException {
@@ -45,7 +47,8 @@ public class RegisterPDU {
         if (marshaller == null) {
             marshaller = jaxbcontext.createMarshaller();
         }
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        // marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
+        // Boolean.TRUE);
         marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
         marshaller.marshal(this, stringwriter);
         String xml = stringwriter.toString();
@@ -53,7 +56,7 @@ public class RegisterPDU {
         return xml;
     }
 
-    public static User XMLParse(String xml) throws JAXBException {
+    public static RegisterPDU XMLParse(String xml) throws JAXBException {
         if (stringreader == null) {
             stringreader = new StringReader(xml);
         }
@@ -64,9 +67,9 @@ public class RegisterPDU {
         }
 
         if (unmarshaller == null) {
-            unmarshaller = User.jaxbcontext.createUnmarshaller();
+            unmarshaller = jaxbcontext.createUnmarshaller();
         }
-        return (User) unmarshaller.unmarshal(stringreader);
+        return (RegisterPDU) unmarshaller.unmarshal(stringreader);
     }
 
 }

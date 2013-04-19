@@ -12,32 +12,24 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "user")
+@XmlRootElement(name = "publish")
 @XmlAccessorType(XmlAccessType.NONE)
-public class User {
+public class PublishPDU {
     protected static JAXBContext  jaxbcontext  = null;
     protected static Marshaller   marshaller   = null;
     protected static Unmarshaller unmarshaller = null;
     protected static StringWriter stringwriter = null;
     protected static StringReader stringreader = null;
-    @XmlAttribute(name = "username")
-    protected String              username;
 
-    @XmlAttribute(name = "password")
-    protected String              password;
+    @XmlAttribute(name = "text")
+    protected String              text;
 
     @SuppressWarnings("unused")
-    private User() {
-
+    private PublishPDU() {
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public String toString() {
-        return "[username: " + this.username + ", password: " + this.password + "]";
+    public PublishPDU(String text) {
+        this.text = text;
     }
 
     public String toXML() throws JAXBException {
@@ -51,6 +43,7 @@ public class User {
         if (marshaller == null) {
             marshaller = jaxbcontext.createMarshaller();
         }
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
         marshaller.marshal(this, stringwriter);
         String xml = stringwriter.toString();
@@ -58,7 +51,7 @@ public class User {
         return xml;
     }
 
-    public static User XMLParse(String xml) throws JAXBException {
+    public static PostPDU XMLParse(String xml) throws JAXBException {
         if (stringreader == null) {
             stringreader = new StringReader(xml);
         }
@@ -69,8 +62,9 @@ public class User {
         }
 
         if (unmarshaller == null) {
-            unmarshaller = User.jaxbcontext.createUnmarshaller();
+            unmarshaller = jaxbcontext.createUnmarshaller();
         }
-        return (User) unmarshaller.unmarshal(stringreader);
+        return (PostPDU) unmarshaller.unmarshal(stringreader);
     }
+
 }

@@ -1,12 +1,8 @@
 package server;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -29,7 +25,6 @@ public class XMLParser {
                             System.out.println("\t" + attributes.getQName(i) + ": " + attributes.getValue(i));
                         }
                     }
-
                 }
 
                 public void endElement(String uri, String localName, String qName) throws SAXException {
@@ -39,10 +34,7 @@ public class XMLParser {
                 }
 
             };
-            String str = "<login password=\"contraseña\" username=\"usuario\"/><post id=\"123\" date=\"2013-04-19T20:46:53.820+03:00\" author=\"autor\" text=\"Necesitamos mas minerales\"/>";
-            InputStream is = new ByteArrayInputStream(str.getBytes());
-            // saxParser.parse("ejemplo.xml", handler);
-            saxParser.parse(is, handler);
+            saxParser.parse("ejemplo.xml", handler);
 
         } catch (Exception e) {
             e.printStackTrace();

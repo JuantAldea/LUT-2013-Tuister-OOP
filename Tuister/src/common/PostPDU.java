@@ -28,6 +28,8 @@ public class PostPDU {
     protected String              author;
     @XmlAttribute(name = "date")
     protected Date                date;
+    @XmlAttribute(name = "likes")
+    protected Integer             likes;
     @XmlAttribute(name = "id")
     protected Integer             id;
 
@@ -35,11 +37,12 @@ public class PostPDU {
     private PostPDU() {
     }
 
-    public PostPDU(String text, String author, Date date, Integer id) {
+    public PostPDU(String text, String author, Integer likes, Date date, Integer id) {
         this.text = text;
         this.author = author;
         this.date = date;
         this.id = id;
+        this.likes = likes;
     }
 
     public String toXML() throws JAXBException {
@@ -54,14 +57,14 @@ public class PostPDU {
             marshaller = jaxbcontext.createMarshaller();
         }
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        //marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
         marshaller.marshal(this, stringwriter);
         String xml = stringwriter.toString();
         stringwriter.flush();
         return xml;
     }
 
-    public static User XMLParse(String xml) throws JAXBException {
+    public static PostPDU XMLParse(String xml) throws JAXBException {
         if (stringreader == null) {
             stringreader = new StringReader(xml);
         }
@@ -72,9 +75,9 @@ public class PostPDU {
         }
 
         if (unmarshaller == null) {
-            unmarshaller = User.jaxbcontext.createUnmarshaller();
+            unmarshaller = jaxbcontext.createUnmarshaller();
         }
-        return (User) unmarshaller.unmarshal(stringreader);
+        return (PostPDU) unmarshaller.unmarshal(stringreader);
     }
 
 }

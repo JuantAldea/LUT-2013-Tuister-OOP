@@ -46,15 +46,16 @@ public class LoginPDU {
         if (marshaller == null) {
             marshaller = jaxbcontext.createMarshaller();
         }
-        //marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        //marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+        // marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
+        // Boolean.TRUE);
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
         marshaller.marshal(this, stringwriter);
         String xml = stringwriter.toString();
         stringwriter.flush();
         return xml;
     }
 
-    public static User XMLParse(String xml) throws JAXBException {
+    public static LoginPDU XMLParse(String xml) throws JAXBException {
         if (stringreader == null) {
             stringreader = new StringReader(xml);
         }
@@ -65,9 +66,9 @@ public class LoginPDU {
         }
 
         if (unmarshaller == null) {
-            unmarshaller = User.jaxbcontext.createUnmarshaller();
+            unmarshaller = jaxbcontext.createUnmarshaller();
         }
-        return (User) unmarshaller.unmarshal(stringreader);
+        return (LoginPDU) unmarshaller.unmarshal(stringreader);
     }
 
 }

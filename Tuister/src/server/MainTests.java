@@ -4,25 +4,21 @@ import java.util.Date;
 
 import common.LoginPDU;
 import common.PostPDU;
+import common.PublishPDU;
 import common.RegisterPDU;
-import common.User;
 
 public class MainTests {
 
     public static void main(String[] args) throws Exception {
-        User user = new User("asd", "dsa");
-        String xml = user.toXML();
-
-        User user3 = (User) User.XMLParse(xml);
-
-        System.out.println(user3.toString());
-        System.out.println(xml);
-        RegisterPDU registerPDU = new RegisterPDU(user3);
-        System.out.println(registerPDU.toXML());
         LoginPDU login = new LoginPDU("usuario", "contraseña");
         System.out.println(login.toXML());
-
-        PostPDU postPDU = new PostPDU("Necesitamos mas minerales", "autor", new Date(), new Integer(123));
+        RegisterPDU register = new RegisterPDU("usuario2", "contraseña2");
+        System.out.println(register.toXML());
+        
+        PostPDU postPDU = new PostPDU("Necesitamos mas minerales", "autor", new Integer(1337), new Date(), new Integer(42));
         System.out.println(postPDU.toXML());
+        
+        PublishPDU publish = new PublishPDU("Crear mas superamos");
+        System.out.println(publish.toXML());
     }
 }
