@@ -14,17 +14,29 @@ public class PDUUnauthHandler extends StateHandler {
         super(context);
     }
 
-    protected void onRegister(Attributes attributes) {
-        try {
-            this.context.send(new AckPDU().toXML());
-        } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    protected Integer onRegister(Attributes attributes) {
+        Integer userID = -1;
+
+        if (attributes.getValue("password").length() <= 0) {
+            try {
+                this.context.send(new ErrorPDU("Invalid password").toXML());
+                this.context.running = false;
+                this.context.selector.wakeup();
+            } catch (JAXBException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return userID;
         }
-        this.printAttributes(attributes);
-        Integer userID = this.context.getDatabase().registerUser(attributes.getValue("username"), attributes.getValue("password"));
+
+        userID = this.context.getDatabase().registerUser(attributes.getValue("username"), attributes.getValue("password"));
         if (userID != -1) {
-            this.context.getDatabase().login(attributes.getValue("username"), attributes.getValue("password"));
+            try {
+                this.context.send(new AckPDU("register").toXML());
+            } catch (JAXBException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
             try {
                 this.context.send(new ErrorPDU("Username already in use").toXML());
@@ -35,6 +47,7 @@ public class PDUUnauthHandler extends StateHandler {
                 e.printStackTrace();
             }
         }
+        return userID;
     }
 
     protected void onLogin(Attributes attributes) {
@@ -44,7 +57,7 @@ public class PDUUnauthHandler extends StateHandler {
             this.context.userID = id;
             this.context.changeStateToAuthenticated();
             try {
-                this.context.send(new AckPDU().toXML());
+                this.context.send(new AckPDU("login").toXML());
             } catch (JAXBException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -54,7 +67,6 @@ public class PDUUnauthHandler extends StateHandler {
             try {
                 this.context.send(new ErrorPDU("Username or password invalid").toXML());
             } catch (JAXBException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             this.context.selector.wakeup();
@@ -63,7 +75,7 @@ public class PDUUnauthHandler extends StateHandler {
 
     protected void onUserContentRequest(Attributes attributes) {
         try {
-            this.context.send(new AckPDU().toXML());
+            this.context.send(new AckPDU("QUE NO TE FALTE DE NADA NIÑO").toXML());
         } catch (JAXBException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

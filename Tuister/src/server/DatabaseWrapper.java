@@ -39,9 +39,7 @@ public class DatabaseWrapper {
             ResultSet rs = statement.executeQuery(String.format("select id from users where username = \"%s\"", username));
 
             if (!rs.next()) {
-                System.out.println("POLLACA");
                 statement.executeUpdate(String.format("insert into users(username, password) values(\"%s\", \"%s\")", username, password));
-                connection.commit();
                 rs = statement.executeQuery(String.format("select id from users where username = \"%s\"", username));
                 return rs.getInt("id");
             }
