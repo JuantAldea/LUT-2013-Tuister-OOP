@@ -4,6 +4,7 @@ import javax.xml.bind.JAXBException;
 
 import pdus.LoginPDU;
 import pdus.RegisterPDU;
+import pdus.UserContentRequestPDU;
 import client.ClientController;
 
 public class ClientNotLoggedIn extends State {
@@ -17,15 +18,15 @@ public class ClientNotLoggedIn extends State {
 	}
 	
 	public State ack(String type) {
-		if (type.equalsIgnoreCase("ack_register")){
+		if (type.equalsIgnoreCase("register")){
 			this.controller.gui.registrationSuccessful();
 			return this;
-		} else if (type.equalsIgnoreCase("ack_login")){
+		} else if (type.equalsIgnoreCase("login")){
 			this.controller.gui.loginSuccessful();
 			return new ClientLoggedIn(this.controller);
+		} else {
+			return this;
 		}
-		
-		return this;
 	}
 	
 	public State register(String username, String password) {
@@ -92,7 +93,11 @@ public class ClientNotLoggedIn extends State {
 	}
 
 	public State userContent(String username) {
-		this.controller.gui.errorNotLoggedIn();
+		try {
+			this.controller.sendToServer(new UserContentRequestPDU(username).toXML());
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
 		return this;
 	}
 	

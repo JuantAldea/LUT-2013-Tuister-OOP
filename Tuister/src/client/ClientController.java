@@ -18,11 +18,11 @@ public class ClientController implements Runnable{
 	private String host = "127.0.0.1";
 	private int port = 1234;
 	
-	private SocketChannel socket = null;
+	public SocketChannel socket = null;
 	private Selector selector = null;
 	
 	public GUI gui = null;
-	private ClientModel model = null;
+	public ClientModel model = null;
 	private ClientState state = null;
 	
 	private boolean active = true;
