@@ -17,6 +17,7 @@ public class ServerWorkerThread implements Runnable {
     protected final ServerWorkerStateUnauthenticated STATE_UNAUTH;
     protected final ServerWorkerStateAuthenticated STATE_AUTH;
     protected ServerWorkerState state = null;
+    protected boolean running = true;
 
     @SuppressWarnings("unused")
     private ServerWorkerThread() {
@@ -44,7 +45,7 @@ public class ServerWorkerThread implements Runnable {
         try {
             selector = Selector.open();
             ByteBuffer buf = ByteBuffer.allocate(socket.socket().getReceiveBufferSize()).order(ByteOrder.BIG_ENDIAN);
-            boolean running = true;
+            this.socket.configureBlocking(false);
             while (running) {
                 socket.register(selector, SelectionKey.OP_READ);
                 // wait for activity
@@ -52,6 +53,10 @@ public class ServerWorkerThread implements Runnable {
                 if (socket.isConnected()) {
                     // activity + socket connected => is talking
                     int received_bytes = socket.read(buf);
+                    if (received_bytes < 0) {
+                        running = false;
+                        break;
+                    }
                     buf.flip();
                     byte[] byteArray = new byte[received_bytes];
                     buf.get(byteArray, 0, received_bytes);
@@ -67,15 +72,21 @@ public class ServerWorkerThread implements Runnable {
                 } else {
                     running = false;
                     break;
-
                 }
             }
-            socket.close();
-            selector.close();
         } catch (IOException e2) {
             // TODO Auto-generated catch block
             e2.printStackTrace();
         }
+        try {
+            socket.close();
+            selector.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        System.out.println("Thread muere");
     }
 
 }
