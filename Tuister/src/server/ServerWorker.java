@@ -40,6 +40,19 @@ public class ServerWorker implements Runnable {
         this.state = this.STATE_UNAUTH;
     }
 
+    public void send(String msg) {
+        ByteBuffer buf = ByteBuffer.allocate(msg.length() + (Integer.SIZE / 8)).order(ByteOrder.BIG_ENDIAN);
+        buf.clear();
+        buf.put(msg.getBytes());
+        buf.flip();
+        try {
+            this.socket.write(buf);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void run() {
         try {
