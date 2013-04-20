@@ -1,4 +1,4 @@
-package server;
+package serverXMLHandlers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +11,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import pdus.ListBeginPDU;
 import pdus.ListEndPDU;
 import pdus.PostPDU;
+import server.ServerWorker;
 
 abstract public class StateHandler extends DefaultHandler {
     protected ServerWorker context = null;
@@ -39,7 +40,6 @@ abstract public class StateHandler extends DefaultHandler {
                 // public PostPDU(String text, String author, Integer likes, Date date, Integer id) {
                 PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"),
                         rs.getDate("post_date"), rs.getInt("id"));
-                System.out.println(post.toXML());
                 this.context.send(post.toXML());
             }
             this.context.send(new ListEndPDU().toXML());

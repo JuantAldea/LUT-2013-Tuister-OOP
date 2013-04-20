@@ -1,4 +1,4 @@
-package server;
+package serverXMLHandlers;
 
 import javax.xml.bind.JAXBException;
 
@@ -7,6 +7,7 @@ import org.xml.sax.SAXException;
 
 import pdus.AckPDU;
 import pdus.ErrorPDU;
+import server.ServerWorker;
 
 public class PDUUnauthHandler extends StateHandler {
 
@@ -20,8 +21,7 @@ public class PDUUnauthHandler extends StateHandler {
         if (attributes.getValue("password").length() <= 0) {
             try {
                 this.context.send(new ErrorPDU("Invalid password").toXML());
-                this.context.running = false;
-                this.context.selector.wakeup();
+                this.context.stop();
             } catch (JAXBException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -41,8 +41,7 @@ public class PDUUnauthHandler extends StateHandler {
         } else {
             try {
                 this.context.send(new ErrorPDU("Username already in use").toXML());
-                this.context.running = false;
-                this.context.selector.wakeup();
+                this.context.stop();
             } catch (JAXBException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -54,7 +53,7 @@ public class PDUUnauthHandler extends StateHandler {
     protected void onLogin(Attributes attributes) {
         Integer id = this.context.getDatabase().login(attributes.getValue("username"), attributes.getValue("password"));
         if (id != -1) {
-            this.context.userID = id;
+            this.context.setUserID(id);
             this.context.changeStateToAuthenticated();
             try {
                 this.context.send(new AckPDU("login").toXML());
@@ -63,13 +62,13 @@ public class PDUUnauthHandler extends StateHandler {
                 e.printStackTrace();
             }
         } else {
-            this.context.running = false;
+            
             try {
                 this.context.send(new ErrorPDU("Username or password invalid").toXML());
             } catch (JAXBException e) {
                 e.printStackTrace();
             }
-            this.context.selector.wakeup();
+            this.context.stop();
         }
     }
 

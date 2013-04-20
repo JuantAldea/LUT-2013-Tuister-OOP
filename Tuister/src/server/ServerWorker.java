@@ -10,6 +10,12 @@ import java.nio.channels.SocketChannel;
 
 import org.xml.sax.SAXException;
 
+import database.DatabaseWrapper;
+
+import serverStates.ServerWorkerState;
+import serverStates.ServerWorkerStateAuthenticated;
+import serverStates.ServerWorkerStateUnauthenticated;
+
 public class ServerWorker implements Runnable {
     protected Integer userID;
     protected SocketChannel socket;
@@ -45,6 +51,19 @@ public class ServerWorker implements Runnable {
         return this.database;
     }
 
+    public Integer getUserID() {
+        return this.userID;
+    }
+
+    public Integer setUserID(Integer userID) {
+        return this.userID = userID;
+    }
+
+    public void stop() {
+        this.running = false;
+        this.selector.wakeup();
+    }
+
     public void send(String msg) {
         ByteBuffer buf = ByteBuffer.allocate(msg.length()).order(ByteOrder.BIG_ENDIAN);
         buf.clear();
@@ -69,7 +88,7 @@ public class ServerWorker implements Runnable {
                 System.out.println(this.running);
                 socket.register(selector, SelectionKey.OP_READ);
                 // wait for activity
-                
+
                 selector.select();
                 if (socket.isConnected()) {
                     int received_bytes = socket.read(buf);

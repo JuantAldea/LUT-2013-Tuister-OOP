@@ -1,4 +1,4 @@
-package server;
+package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,8 +27,7 @@ public class DatabaseWrapper {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("DATABASE CONNECTION");
-        System.out.println(connection);
+        System.out.println("Connection: " + connection);
     }
 
     public Integer registerUser(String username, String password) {
@@ -207,7 +206,6 @@ public class DatabaseWrapper {
     }
 
     public ResultSet userContentRequest(String username) {
-        System.out.println("Usercontent request" + username);
         Statement statement;
         ResultSet rs = null;
         try {

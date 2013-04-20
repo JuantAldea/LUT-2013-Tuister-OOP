@@ -9,6 +9,8 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
+import database.DatabaseWrapper;
+
 public class Server implements Runnable {
     protected Selector selector = null;
     protected ServerSocketChannel server = null;

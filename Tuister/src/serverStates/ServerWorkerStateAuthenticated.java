@@ -1,4 +1,7 @@
-package server;
+package serverStates;
+
+import server.ServerWorker;
+import serverXMLHandlers.PDUAuthHandler;
 
 public class ServerWorkerStateAuthenticated extends ServerWorkerState {
 

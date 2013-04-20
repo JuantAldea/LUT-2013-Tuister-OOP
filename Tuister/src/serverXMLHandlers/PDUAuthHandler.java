@@ -1,4 +1,4 @@
-package server;
+package serverXMLHandlers;
 
 import javax.xml.bind.JAXBException;
 
@@ -6,6 +6,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import pdus.AckPDU;
+import server.ServerWorker;
 
 public class PDUAuthHandler extends StateHandler {
 
@@ -15,7 +16,7 @@ public class PDUAuthHandler extends StateHandler {
 
     protected void onPublish(Attributes attributes) {
         if (attributes.getValue("text").length() > 0) {
-            this.context.getDatabase().publish(this.context.userID, attributes.getValue("text"));
+            this.context.getDatabase().publish(this.context.getUserID(), attributes.getValue("text"));
         } else {
             try {
                 this.context.send(new AckPDU("publish").toXML());
@@ -35,28 +36,27 @@ public class PDUAuthHandler extends StateHandler {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        this.context.running = false;
-        this.context.selector.wakeup();
+        this.context.stop();
     }
 
     protected void onLike(Attributes attributes) {
-        this.context.getDatabase().like(this.context.userID, Integer.parseInt(attributes.getValue("postid")));
+        this.context.getDatabase().like(this.context.getUserID(), Integer.parseInt(attributes.getValue("postid")));
     }
 
     protected void onUnlike(Attributes attributes) {
-        this.context.getDatabase().unLike(this.context.userID, Integer.parseInt(attributes.getValue("postid")));
+        this.context.getDatabase().unLike(this.context.getUserID(), Integer.parseInt(attributes.getValue("postid")));
     }
 
     protected void onFollow(Attributes attributes) {
-        this.context.getDatabase().follow(this.context.userID, attributes.getValue("username"));
+        this.context.getDatabase().follow(this.context.getUserID(), attributes.getValue("username"));
     }
 
     protected void onUnFollow(Attributes attributes) {
-        this.context.getDatabase().unFollow(this.context.userID, attributes.getValue("username"));
+        this.context.getDatabase().unFollow(this.context.getUserID(), attributes.getValue("username"));
     }
 
     protected void onFollowingUsersRequest(Attributes attributes) {
-        this.printAttributes(attributes);
+        this.context.getDatabase().followingUsersRequest(this.context.getUserID());
     }
 
     protected void onUserListRequest(Attributes attributes) {

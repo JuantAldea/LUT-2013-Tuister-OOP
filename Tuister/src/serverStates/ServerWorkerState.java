@@ -1,4 +1,4 @@
-package server;
+package serverStates;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +7,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
+
+import server.ServerWorker;
+import serverXMLHandlers.StateHandler;
 
 abstract public class ServerWorkerState {
     protected ServerWorker context;
