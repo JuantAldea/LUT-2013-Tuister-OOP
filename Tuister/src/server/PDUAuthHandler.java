@@ -16,6 +16,13 @@ public class PDUAuthHandler extends StateHandler {
     protected void onPublish(Attributes attributes) {
         if (attributes.getValue("text").length() > 0) {
             this.context.getDatabase().publish(this.context.userID, attributes.getValue("text"));
+        } else {
+            try {
+                this.context.send(new AckPDU("publish").toXML());
+            } catch (JAXBException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
