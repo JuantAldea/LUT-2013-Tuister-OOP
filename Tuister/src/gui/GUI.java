@@ -165,4 +165,14 @@ public class GUI implements Runnable {
 	public void loginSuccessful() {
 		System.out.println("Logged in.");
 	}
+
+
+	public void logoutSuccessful() {
+		System.out.println("Logged out.");
+	}
+
+
+	public void errorAlreadyLoggedIn() {
+		System.out.println("You are already logged in.");
+	}
 }
