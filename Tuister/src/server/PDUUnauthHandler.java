@@ -1,9 +1,5 @@
 package server;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-
 import javax.xml.bind.JAXBException;
 
 import org.xml.sax.Attributes;
@@ -11,9 +7,6 @@ import org.xml.sax.SAXException;
 
 import pdus.AckPDU;
 import pdus.ErrorPDU;
-import pdus.ListBeginPDU;
-import pdus.ListEndPDU;
-import pdus.PostPDU;
 
 public class PDUUnauthHandler extends StateHandler {
 
