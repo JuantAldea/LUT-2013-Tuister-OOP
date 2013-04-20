@@ -15,6 +15,7 @@ public class PDUAuthHandler extends StateHandler {
 
     protected void onPublish(Attributes attributes) {
         this.printAttributes(attributes);
+        this.context.getDatabase().publish(this.context.userID, attributes.getValue("text"));
     }
 
     protected void onLogout(Attributes attributes) {
@@ -60,7 +61,6 @@ public class PDUAuthHandler extends StateHandler {
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         if (qName.equalsIgnoreCase("publish")) {
-            System.out.println("Tag: " + qName);
             this.onPublish(attributes);
         } else if (qName.equalsIgnoreCase("logout")) {
             System.out.println("Tag: " + qName);

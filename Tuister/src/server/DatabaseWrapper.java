@@ -56,7 +56,8 @@ public class DatabaseWrapper {
         try {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
-            ResultSet rs = statement.executeQuery(String.format("select id from users where username = \"%s\" AND password=\"%s\"", username, password));
+            ResultSet rs = statement.executeQuery(String.format("select id from users where username = \"%s\" AND password=\"%s\"", username,
+                    password));
             if (rs.next()) {
                 return rs.getInt("id");
             }
@@ -68,7 +69,20 @@ public class DatabaseWrapper {
     }
 
     public void publish(Integer userID, String text) {
-
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            int result = statement.executeUpdate(String.format("insert into posts(author, body) values (\"%d\", \"%s\")", userID, text));
+            if (result == 1){
+                System.out.println("TODO BIEN");
+            }else{
+                //errror
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void like(Integer userID, Integer postID) {
