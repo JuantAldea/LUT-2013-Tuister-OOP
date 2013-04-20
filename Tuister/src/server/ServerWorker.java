@@ -49,6 +49,7 @@ public class ServerWorker implements Runnable {
             while (running) {
                 socket.register(selector, SelectionKey.OP_READ);
                 // wait for activity
+                System.out.println(this.state.toString());
                 selector.select();
                 if (socket.isConnected()) {
                     int received_bytes = socket.read(buf);

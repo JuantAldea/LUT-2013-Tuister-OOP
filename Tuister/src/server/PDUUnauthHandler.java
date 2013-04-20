@@ -10,19 +10,24 @@ public class PDUUnauthHandler extends StateHandler {
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        System.out.println("Tag: " + qName);
         if (qName.equalsIgnoreCase("register")) {
+            System.out.println("Tag: " + qName);
             for (int i = 0; i < attributes.getLength(); i++) {
                 System.out.println("\t" + attributes.getQName(i) + ": " + attributes.getValue(i));
             }
         } else if (qName.equalsIgnoreCase("login")) {
+            System.out.println("Tag: " + qName);
             for (int i = 0; i < attributes.getLength(); i++) {
                 System.out.println("\t" + attributes.getQName(i) + ": " + attributes.getValue(i));
             }
+            this.context.changeStateToAuthenticated();
         } else if (qName.equalsIgnoreCase("usercontentrequest")) {
+            System.out.println("Tag: " + qName);
             for (int i = 0; i < attributes.getLength(); i++) {
                 System.out.println("\t" + attributes.getQName(i) + ": " + attributes.getValue(i));
             }
+        }else{
+            System.out.println("Not valid in currrent state Tag: " + qName);
         }
     }
 

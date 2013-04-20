@@ -6,4 +6,9 @@ public class ServerWorkerStateAuthenticated extends ServerWorkerState {
         super(context);
         this.handler = new PDUAuthHandler(context);
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getName();
+    }
 }

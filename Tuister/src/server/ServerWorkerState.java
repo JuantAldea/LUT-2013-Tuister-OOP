@@ -35,4 +35,6 @@ abstract public class ServerWorkerState {
             saxParser.parse(input, this.handler);
         }
     }
+
+    abstract public String toString();
 }

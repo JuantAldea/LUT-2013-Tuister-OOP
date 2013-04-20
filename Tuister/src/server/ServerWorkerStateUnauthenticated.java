@@ -7,4 +7,8 @@ public class ServerWorkerStateUnauthenticated extends ServerWorkerState {
         this.handler = new PDUUnauthHandler(context);
     }
 
+    @Override
+    public String toString() {
+        return this.getClass().getName();
+    }
 }
