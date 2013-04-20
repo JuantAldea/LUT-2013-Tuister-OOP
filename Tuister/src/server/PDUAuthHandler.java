@@ -48,11 +48,11 @@ public class PDUAuthHandler extends StateHandler {
     }
 
     protected void onFollow(Attributes attributes) {
-        this.printAttributes(attributes);
+        this.context.getDatabase().follow(this.context.userID, attributes.getValue("username"));
     }
 
     protected void onUnFollow(Attributes attributes) {
-        this.printAttributes(attributes);
+        this.context.getDatabase().unFollow(this.context.userID, attributes.getValue("username"));
     }
 
     protected void onFollowingUsersRequest(Attributes attributes) {

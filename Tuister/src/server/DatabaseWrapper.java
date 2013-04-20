@@ -136,11 +136,63 @@ public class DatabaseWrapper {
     }
 
     public void follow(Integer userID, String userToFollow) {
-
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            ResultSet rs = statement.executeQuery(String.format("select id from users where username=\"%s\"", userToFollow));
+            // valid user
+            if (rs.next()) {
+                Integer userToFollowID = rs.getInt("id");
+                rs = statement.executeQuery(String.format("select * from followers where follower=%d and followed=%d", userID,
+                        userToFollowID));
+                // not following already
+                if (!rs.next()) {
+                    int result = statement.executeUpdate(String.format("insert into followers(follower, followed) values(%d, %d)",
+                            userID, userToFollowID));
+                    // send ack
+                } else {
+                    // already following
+                }
+            } else {
+                // error user invalid
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void unFollow(Integer userID, String userToFollow) {
-
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            ResultSet rs = statement.executeQuery(String.format("select id from users where username=\"%s\"", userToFollow));
+            // valid user
+            if (rs.next()) {
+                Integer userToFollowID = rs.getInt("id");
+                if (userID != userToFollowID) {
+                    rs = statement.executeQuery(String.format("select * from followers where follower=%d and followed=%d", userID,
+                            userToFollowID));
+                    // not following already
+                    if (rs.next()) {
+                        int result = statement.executeUpdate(String.format("delete from followers where follower=%d and followed=%d",
+                                userID, userToFollowID));
+                        // send ack
+                    } else {
+                        // already following
+                    }
+                } else {
+                    // cannot follow yourself
+                }
+            } else {
+                // error user invalid
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void followingUsersRequest(Integer userID) {
