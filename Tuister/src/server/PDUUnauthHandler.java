@@ -16,6 +16,10 @@ public class PDUUnauthHandler extends DefaultHandler {
             for (int i = 0; i < attributes.getLength(); i++) {
                 System.out.println("\t" + attributes.getQName(i) + ": " + attributes.getValue(i));
             }
+        } else if (qName.equalsIgnoreCase("usercontentrequest")) {
+            for (int i = 0; i < attributes.getLength(); i++) {
+                System.out.println("\t" + attributes.getQName(i) + ": " + attributes.getValue(i));
+            }
         }
     }
 

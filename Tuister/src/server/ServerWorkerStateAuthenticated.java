@@ -1,17 +1,9 @@
 package server;
 
-import java.io.InputStream;
-
 public class ServerWorkerStateAuthenticated extends ServerWorkerState {
 
     public ServerWorkerStateAuthenticated(ServerWorkerThread context) {
         super(context);
+        this.handler = new PDUAuthHandler();
     }
-
-    @Override
-    public void process(InputStream input) {
-        // TODO Auto-generated method stub
-
-    }
-
 }
