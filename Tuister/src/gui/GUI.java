@@ -145,4 +145,24 @@ public class GUI implements Runnable {
 	public void deactivate() {
 		this.active = false;
 	}
+
+
+	public void errorNotLoggedIn() {
+		System.out.println("You are not logged in.");
+	}
+
+
+	public void errorOpeningSocket() {
+		System.out.println("The connection could not be established.");
+	}
+
+
+	public void registrationSuccessful() {
+		System.out.println("Registered. Please, login.");
+	}
+
+
+	public void loginSuccessful() {
+		System.out.println("Logged in.");
+	}
 }
