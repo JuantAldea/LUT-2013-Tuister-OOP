@@ -1,4 +1,4 @@
-package common;
+package pdus;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -12,23 +12,27 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "unlike")
+@XmlRootElement(name = "login")
 @XmlAccessorType(XmlAccessType.NONE)
-public class UnlikePDU {
+public class LoginPDU {
     protected static JAXBContext  jaxbcontext  = null;
     protected static Marshaller   marshaller   = null;
     protected static Unmarshaller unmarshaller = null;
     protected static StringWriter stringwriter = null;
     protected static StringReader stringreader = null;
-    @XmlAttribute(name = "postid")
-    protected Integer             postid;
+    @XmlAttribute(name = "username")
+    protected String              username;
+
+    @XmlAttribute(name = "password")
+    protected String              password;
 
     @SuppressWarnings("unused")
-    private UnlikePDU() {
+    private LoginPDU() {
     }
 
-    public UnlikePDU(Integer postid) {
-        this.postid = postid;
+    public LoginPDU(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String toXML() throws JAXBException {

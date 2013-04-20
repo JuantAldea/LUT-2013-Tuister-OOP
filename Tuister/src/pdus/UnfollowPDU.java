@@ -1,4 +1,4 @@
-package common;
+package pdus;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -12,28 +12,23 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "register")
+@XmlRootElement(name = "unfollow")
 @XmlAccessorType(XmlAccessType.NONE)
-public class RegisterPDU {
+public class UnfollowPDU {
     protected static JAXBContext  jaxbcontext  = null;
     protected static Marshaller   marshaller   = null;
     protected static Unmarshaller unmarshaller = null;
     protected static StringWriter stringwriter = null;
     protected static StringReader stringreader = null;
-
     @XmlAttribute(name = "username")
     protected String              username;
 
-    @XmlAttribute(name = "password")
-    protected String              password;
-
     @SuppressWarnings("unused")
-    private RegisterPDU() {
+    private UnfollowPDU() {
     }
 
-    public RegisterPDU(String username, String password) {
+    public UnfollowPDU(String username) {
         this.username = username;
-        this.password = password;
     }
 
     public String toXML() throws JAXBException {
@@ -56,7 +51,7 @@ public class RegisterPDU {
         return xml;
     }
 
-    public static RegisterPDU XMLParse(String xml) throws JAXBException {
+    public static LoginPDU XMLParse(String xml) throws JAXBException {
         if (stringreader == null) {
             stringreader = new StringReader(xml);
         }
@@ -69,7 +64,7 @@ public class RegisterPDU {
         if (unmarshaller == null) {
             unmarshaller = jaxbcontext.createUnmarshaller();
         }
-        return (RegisterPDU) unmarshaller.unmarshal(stringreader);
+        return (LoginPDU) unmarshaller.unmarshal(stringreader);
     }
 
 }

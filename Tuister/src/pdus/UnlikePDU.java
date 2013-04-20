@@ -1,4 +1,4 @@
-package common;
+package pdus;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "like")
+@XmlRootElement(name = "unlike")
 @XmlAccessorType(XmlAccessType.NONE)
-public class LikePDU {
+public class UnlikePDU {
     protected static JAXBContext  jaxbcontext  = null;
     protected static Marshaller   marshaller   = null;
     protected static Unmarshaller unmarshaller = null;
@@ -24,10 +24,10 @@ public class LikePDU {
     protected Integer             postid;
 
     @SuppressWarnings("unused")
-    private LikePDU() {
+    private UnlikePDU() {
     }
 
-    public LikePDU(Integer postid) {
+    public UnlikePDU(Integer postid) {
         this.postid = postid;
     }
 

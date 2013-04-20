@@ -1,4 +1,4 @@
-package common;
+package pdus;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -8,28 +8,19 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "error")
+@XmlRootElement(name = "ack")
 @XmlAccessorType(XmlAccessType.NONE)
-public class ErrorPDU {
+public class AckPDU {
     protected static JAXBContext  jaxbcontext  = null;
     protected static Marshaller   marshaller   = null;
     protected static Unmarshaller unmarshaller = null;
     protected static StringWriter stringwriter = null;
     protected static StringReader stringreader = null;
 
-    @XmlAttribute(name = "reason")
-    protected String              reason;
-
-    @SuppressWarnings("unused")
-    private ErrorPDU() {
-    }
-
-    public ErrorPDU(String reason) {
-        this.reason = reason;
+    public AckPDU() {
     }
 
     public String toXML() throws JAXBException {

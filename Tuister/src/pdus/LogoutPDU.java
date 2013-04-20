@@ -1,4 +1,4 @@
-package common;
+package pdus;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -8,27 +8,19 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "unfollow")
+@XmlRootElement(name = "logout")
 @XmlAccessorType(XmlAccessType.NONE)
-public class UnfollowPDU {
+public class LogoutPDU {
     protected static JAXBContext  jaxbcontext  = null;
     protected static Marshaller   marshaller   = null;
     protected static Unmarshaller unmarshaller = null;
     protected static StringWriter stringwriter = null;
     protected static StringReader stringreader = null;
-    @XmlAttribute(name = "username")
-    protected String              username;
 
-    @SuppressWarnings("unused")
-    private UnfollowPDU() {
-    }
-
-    public UnfollowPDU(String username) {
-        this.username = username;
+    public LogoutPDU() {
     }
 
     public String toXML() throws JAXBException {

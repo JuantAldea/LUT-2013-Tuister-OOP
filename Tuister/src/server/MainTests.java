@@ -2,19 +2,20 @@ package server;
 
 import java.util.Date;
 
-import common.ErrorPDU;
-import common.FollowPDU;
-import common.FollowingUsersRequestPDU;
-import common.LikePDU;
-import common.LoginPDU;
-import common.LogoutPDU;
-import common.PostPDU;
-import common.PublishPDU;
-import common.RegisterPDU;
-import common.UnfollowPDU;
-import common.UnlikePDU;
-import common.UserContentRequestPDU;
-import common.UserListRequestPDU;
+import pdus.ErrorPDU;
+import pdus.FollowPDU;
+import pdus.FollowingUsersRequestPDU;
+import pdus.LikePDU;
+import pdus.LoginPDU;
+import pdus.LogoutPDU;
+import pdus.PostPDU;
+import pdus.PublishPDU;
+import pdus.RegisterPDU;
+import pdus.UnfollowPDU;
+import pdus.UnlikePDU;
+import pdus.UserContentRequestPDU;
+import pdus.UserListRequestPDU;
+
 
 public class MainTests {
 
