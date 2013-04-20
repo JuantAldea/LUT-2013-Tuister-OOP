@@ -8,9 +8,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-public class PDU {
+abstract public class PDU {
 
-    public String toXML(@SuppressWarnings("rawtypes") Class classObject) throws JAXBException {
+    protected String toXML(@SuppressWarnings("rawtypes") Class classObject) throws JAXBException {
         JAXBContext jaxbcontext = JAXBContext.newInstance(classObject);
         Marshaller marshaller = jaxbcontext.createMarshaller();
         StringWriter stringwriter = new StringWriter();
@@ -24,7 +24,7 @@ public class PDU {
         return xml;
     }
 
-    public static PDU XMLParse(String xml, @SuppressWarnings("rawtypes") Class classObject) throws JAXBException {
+    protected static PDU XMLParse(String xml, @SuppressWarnings("rawtypes") Class classObject) throws JAXBException {
         JAXBContext jaxbcontext = JAXBContext.newInstance(classObject);
         StringReader stringreader = new StringReader(xml);
         Unmarshaller unmarshaller = jaxbcontext.createUnmarshaller();
