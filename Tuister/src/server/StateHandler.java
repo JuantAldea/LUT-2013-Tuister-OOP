@@ -35,7 +35,7 @@ abstract public class StateHandler extends DefaultHandler {
         ResultSet rs = this.context.getDatabase().userContentRequest(attributes.getValue("username"));
         try {
             this.context.send(new ListBeginPDU().toXML());
-            while (rs.next()) {
+            while (rs != null && rs.next()) {
                 // public PostPDU(String text, String author, Integer likes, Date date, Integer id) {
                 PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"),
                         rs.getDate("post_date"), rs.getInt("id"));
