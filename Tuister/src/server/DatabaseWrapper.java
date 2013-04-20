@@ -203,8 +203,24 @@ public class DatabaseWrapper {
 
     }
 
-    public void userContentRequest(String username) {
-
+    public ResultSet userContentRequest(String username) {
+        Statement statement;
+        ResultSet rs = null;
+        try {
+            statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            rs = statement.executeQuery(String.format("select id from users where username=\"%s\"", username));
+            // valid user
+            if (rs.next()) {
+                rs = statement.executeQuery(String.format("select * from posts where author=%d", rs.getInt("id")));
+            } else {
+                rs = null;
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return rs;
     }
 
 }

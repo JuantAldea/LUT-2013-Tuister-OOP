@@ -1,5 +1,7 @@
 package server;
 
+import java.sql.ResultSet;
+
 import javax.xml.bind.JAXBException;
 
 import org.xml.sax.Attributes;
@@ -73,6 +75,7 @@ public class PDUUnauthHandler extends StateHandler {
     }
 
     protected void onUserContentRequest(Attributes attributes) {
+        ResultSet rs = this.context.getDatabase().userContentRequest(attributes.getValue("username"));
         try {
             this.context.send(new AckPDU("QUE NO TE FALTE DE NADA NIÑO").toXML());
         } catch (JAXBException e) {
