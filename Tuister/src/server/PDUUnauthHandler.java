@@ -4,11 +4,11 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class XMLRootHandler extends DefaultHandler {
+public class PDUUnauthHandler extends DefaultHandler {
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         System.out.println("Tag: " + qName);
-        if (qName.equalsIgnoreCase("post")) {
+        if (qName.equalsIgnoreCase("register")) {
             for (int i = 0; i < attributes.getLength(); i++) {
                 System.out.println("\t" + attributes.getQName(i) + ": " + attributes.getValue(i));
             }

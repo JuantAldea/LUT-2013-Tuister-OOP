@@ -7,7 +7,7 @@ public class XMLParser {
     public static void main(String argv[]) {
         try {
             SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-            saxParser.parse("ejemplo.xml", new XMLRootHandler());
+            saxParser.parse("ejemplo.xml", new PDUUnauthHandler());
 
         } catch (Exception e) {
             e.printStackTrace();
