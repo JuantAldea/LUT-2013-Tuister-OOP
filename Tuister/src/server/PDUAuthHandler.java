@@ -14,8 +14,9 @@ public class PDUAuthHandler extends StateHandler {
     }
 
     protected void onPublish(Attributes attributes) {
-        this.printAttributes(attributes);
-        this.context.getDatabase().publish(this.context.userID, attributes.getValue("text"));
+        if (attributes.getValue("text").length() > 0) {
+            this.context.getDatabase().publish(this.context.userID, attributes.getValue("text"));
+        }
     }
 
     protected void onLogout(Attributes attributes) {
