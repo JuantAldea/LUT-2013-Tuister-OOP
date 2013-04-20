@@ -51,7 +51,7 @@ public class UnfollowPDU {
         return xml;
     }
 
-    public static LoginPDU XMLParse(String xml) throws JAXBException {
+    public static UnfollowPDU XMLParse(String xml) throws JAXBException {
         if (stringreader == null) {
             stringreader = new StringReader(xml);
         }
@@ -64,7 +64,7 @@ public class UnfollowPDU {
         if (unmarshaller == null) {
             unmarshaller = jaxbcontext.createUnmarshaller();
         }
-        return (LoginPDU) unmarshaller.unmarshal(stringreader);
+        return (UnfollowPDU) unmarshaller.unmarshal(stringreader);
     }
 
 }

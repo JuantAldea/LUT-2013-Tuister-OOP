@@ -43,7 +43,7 @@ public class AckPDU {
         return xml;
     }
 
-    public static RegisterPDU XMLParse(String xml) throws JAXBException {
+    public static AckPDU XMLParse(String xml) throws JAXBException {
         if (stringreader == null) {
             stringreader = new StringReader(xml);
         }
@@ -56,7 +56,7 @@ public class AckPDU {
         if (unmarshaller == null) {
             unmarshaller = jaxbcontext.createUnmarshaller();
         }
-        return (RegisterPDU) unmarshaller.unmarshal(stringreader);
+        return (AckPDU) unmarshaller.unmarshal(stringreader);
     }
 
 }

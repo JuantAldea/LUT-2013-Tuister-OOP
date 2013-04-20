@@ -51,7 +51,7 @@ public class UserContentRequestPDU {
         return xml;
     }
 
-    public static LoginPDU XMLParse(String xml) throws JAXBException {
+    public static UserContentRequestPDU XMLParse(String xml) throws JAXBException {
         if (stringreader == null) {
             stringreader = new StringReader(xml);
         }
@@ -64,7 +64,7 @@ public class UserContentRequestPDU {
         if (unmarshaller == null) {
             unmarshaller = jaxbcontext.createUnmarshaller();
         }
-        return (LoginPDU) unmarshaller.unmarshal(stringreader);
+        return (UserContentRequestPDU) unmarshaller.unmarshal(stringreader);
     }
 
 }

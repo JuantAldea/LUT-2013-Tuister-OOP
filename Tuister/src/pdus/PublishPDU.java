@@ -51,7 +51,7 @@ public class PublishPDU {
         return xml;
     }
 
-    public static PostPDU XMLParse(String xml) throws JAXBException {
+    public static PublishPDU XMLParse(String xml) throws JAXBException {
         if (stringreader == null) {
             stringreader = new StringReader(xml);
         }
@@ -64,7 +64,7 @@ public class PublishPDU {
         if (unmarshaller == null) {
             unmarshaller = jaxbcontext.createUnmarshaller();
         }
-        return (PostPDU) unmarshaller.unmarshal(stringreader);
+        return (PublishPDU) unmarshaller.unmarshal(stringreader);
     }
 
 }

@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-
 @XmlRootElement(name = "error")
 @XmlAccessorType(XmlAccessType.NONE)
 public class ErrorPDU {
@@ -53,7 +52,7 @@ public class ErrorPDU {
         return xml;
     }
 
-    public static RegisterPDU XMLParse(String xml) throws JAXBException {
+    public static ErrorPDU XMLParse(String xml) throws JAXBException {
         if (stringreader == null) {
             stringreader = new StringReader(xml);
         }
@@ -66,7 +65,7 @@ public class ErrorPDU {
         if (unmarshaller == null) {
             unmarshaller = jaxbcontext.createUnmarshaller();
         }
-        return (RegisterPDU) unmarshaller.unmarshal(stringreader);
+        return (ErrorPDU) unmarshaller.unmarshal(stringreader);
     }
 
 }
