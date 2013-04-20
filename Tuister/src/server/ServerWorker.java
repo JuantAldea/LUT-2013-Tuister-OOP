@@ -41,7 +41,7 @@ public class ServerWorker implements Runnable {
     }
 
     public void send(String msg) {
-        ByteBuffer buf = ByteBuffer.allocate(msg.length() + (Integer.SIZE / 8)).order(ByteOrder.BIG_ENDIAN);
+        ByteBuffer buf = ByteBuffer.allocate(msg.length()).order(ByteOrder.BIG_ENDIAN);
         buf.clear();
         buf.put(msg.getBytes());
         buf.flip();

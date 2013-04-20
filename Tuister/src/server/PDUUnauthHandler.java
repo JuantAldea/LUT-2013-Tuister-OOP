@@ -20,6 +20,7 @@ public class PDUUnauthHandler extends StateHandler {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        this.printAttributes(attributes);
     }
 
     protected void onLogin(Attributes attributes) {
@@ -31,6 +32,7 @@ public class PDUUnauthHandler extends StateHandler {
             e.printStackTrace();
         }
         this.context.changeStateToAuthenticated();
+        this.printAttributes(attributes);
     }
 
     protected void onUserContentRequest(Attributes attributes) {
@@ -40,6 +42,7 @@ public class PDUUnauthHandler extends StateHandler {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        this.printAttributes(attributes);
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {

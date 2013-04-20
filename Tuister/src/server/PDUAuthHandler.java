@@ -9,12 +9,6 @@ public class PDUAuthHandler extends StateHandler {
         super(context);
     }
 
-    protected void printAttributes(Attributes attributes) {
-        for (int i = 0; i < attributes.getLength(); i++) {
-            System.out.println("\t" + attributes.getQName(i) + ": " + attributes.getValue(i));
-        }
-    }
-
     protected void onPublish(Attributes attributes) {
         this.printAttributes(attributes);
     }
