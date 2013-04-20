@@ -14,15 +14,15 @@ import java.util.Iterator;
 
 import javax.xml.bind.JAXBException;
 
-import common.FollowPDU;
-import common.FollowingUsersRequestPDU;
-import common.LikePDU;
-import common.LoginPDU;
-import common.PublishPDU;
-import common.RegisterPDU;
-import common.UnfollowPDU;
-import common.UserContentRequestPDU;
-import common.UserListRequestPDU;
+import pdus.FollowPDU;
+import pdus.FollowingUsersRequestPDU;
+import pdus.LikePDU;
+import pdus.LoginPDU;
+import pdus.PublishPDU;
+import pdus.RegisterPDU;
+import pdus.UnfollowPDU;
+import pdus.UserContentRequestPDU;
+import pdus.UserListRequestPDU;
 
 public class ClientController implements Runnable{
 	private String host = "127.0.0.1";
