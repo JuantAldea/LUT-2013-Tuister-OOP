@@ -36,11 +36,12 @@ public class DatabaseWrapper {
         try {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
-            ResultSet rs = statement.executeQuery(String.format("select id from users where username = \"%s\"", username));
+            ResultSet rs = statement.executeQuery(String.format("select id from users where username = \"%s\"",
+                    username));
 
             if (!rs.next()) {
-                statement.executeUpdate(String.format("insert into users(username, password) values(\"%s\", \"%s\")", username,
-                        password));
+                statement.executeUpdate(String.format("insert into users(username, password) values(\"%s\", \"%s\")",
+                        username, password));
                 rs = statement.executeQuery(String.format("select id from users where username = \"%s\"", username));
                 return rs.getInt("id");
             }
@@ -57,8 +58,8 @@ public class DatabaseWrapper {
         try {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
-            ResultSet rs = statement.executeQuery(String.format("select id from users where username = \"%s\" AND password=\"%s\"",
-                    username, password));
+            ResultSet rs = statement.executeQuery(String.format(
+                    "select id from users where username = \"%s\" AND password=\"%s\"", username, password));
             if (rs.next()) {
                 return rs.getInt("id");
             }
@@ -74,8 +75,8 @@ public class DatabaseWrapper {
         try {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
-            int result = statement.executeUpdate(String
-                    .format("insert into posts(author, body) values (\"%d\", \"%s\")", userID, text));
+            int result = statement.executeUpdate(String.format(
+                    "insert into posts(author, body) values (\"%d\", \"%s\")", userID, text));
             if (result == 1) {
                 System.out.println("TODO BIEN");
             } else {
@@ -92,18 +93,18 @@ public class DatabaseWrapper {
         try {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
-            ResultSet rs = statement.executeQuery(String.format("select * from likes where user=\"%d\" and post=\"%s\"", userID,
-                    postID));
+            ResultSet rs = statement.executeQuery(String.format(
+                    "select * from likes where user=\"%d\" and post=\"%s\"", userID, postID));
             if (!rs.next()) {
-                int result = statement.executeUpdate(String.format("insert into likes(user, post) values (\"%d\", \"%s\")", userID,
-                        postID));
+                int result = statement.executeUpdate(String.format(
+                        "insert into likes(user, post) values (\"%d\", \"%s\")", userID, postID));
                 if (result == 1) {
                     System.out.println("TODO BIEN");
                 }
                 rs = statement.executeQuery(String.format("select likes from posts where id=\"%d\"", postID));
                 rs.next();
-                result = statement.executeUpdate(String.format("update posts set likes=%d where id =%d", rs.getInt("likes") + 1,
-                        postID));
+                result = statement.executeUpdate(String.format("update posts set likes=%d where id =%d",
+                        rs.getInt("likes") + 1, postID));
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -116,18 +117,18 @@ public class DatabaseWrapper {
         try {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
-            ResultSet rs = statement.executeQuery(String.format("select * from likes where user=\"%d\" and post=\"%s\"", userID,
-                    postID));
+            ResultSet rs = statement.executeQuery(String.format(
+                    "select * from likes where user=\"%d\" and post=\"%s\"", userID, postID));
             if (rs.next()) {
-                int result = statement.executeUpdate(String.format("delete from likes where user=\"%d\" and post =\"%d\"", userID,
-                        postID));
+                int result = statement.executeUpdate(String.format(
+                        "delete from likes where user=\"%d\" and post =\"%d\"", userID, postID));
                 if (result == 1) {
                     System.out.println("TODO BIEN");
                 }
                 rs = statement.executeQuery(String.format("select likes from posts where id=\"%d\"", postID));
                 rs.next();
-                result = statement.executeUpdate(String.format("update posts set likes=%d where id =%d", rs.getInt("likes") - 1,
-                        postID));
+                result = statement.executeUpdate(String.format("update posts set likes=%d where id =%d",
+                        rs.getInt("likes") - 1, postID));
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -140,16 +141,17 @@ public class DatabaseWrapper {
         try {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
-            ResultSet rs = statement.executeQuery(String.format("select id from users where username=\"%s\"", userToFollow));
+            ResultSet rs = statement.executeQuery(String.format("select id from users where username=\"%s\"",
+                    userToFollow));
             // valid user
             if (rs.next()) {
                 Integer userToFollowID = rs.getInt("id");
-                rs = statement.executeQuery(String.format("select * from followers where follower=%d and followed=%d", userID,
-                        userToFollowID));
+                rs = statement.executeQuery(String.format("select * from followers where follower=%d and followed=%d",
+                        userID, userToFollowID));
                 // not following already
                 if (!rs.next()) {
-                    int result = statement.executeUpdate(String.format("insert into followers(follower, followed) values(%d, %d)",
-                            userID, userToFollowID));
+                    int result = statement.executeUpdate(String.format(
+                            "insert into followers(follower, followed) values(%d, %d)", userID, userToFollowID));
                     // send ack
                 } else {
                     // already following
@@ -168,17 +170,18 @@ public class DatabaseWrapper {
         try {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
-            ResultSet rs = statement.executeQuery(String.format("select id from users where username=\"%s\"", userToFollow));
+            ResultSet rs = statement.executeQuery(String.format("select id from users where username=\"%s\"",
+                    userToFollow));
             // valid user
             if (rs.next()) {
                 Integer userToFollowID = rs.getInt("id");
                 if (userID != userToFollowID) {
-                    rs = statement.executeQuery(String.format("select * from followers where follower=%d and followed=%d", userID,
-                            userToFollowID));
+                    rs = statement.executeQuery(String.format(
+                            "select * from followers where follower=%d and followed=%d", userID, userToFollowID));
                     // not following already
                     if (rs.next()) {
-                        int result = statement.executeUpdate(String.format("delete from followers where follower=%d and followed=%d",
-                                userID, userToFollowID));
+                        int result = statement.executeUpdate(String.format(
+                                "delete from followers where follower=%d and followed=%d", userID, userToFollowID));
                         // send ack
                     } else {
                         // already following
@@ -204,6 +207,7 @@ public class DatabaseWrapper {
     }
 
     public ResultSet userContentRequest(String username) {
+        System.out.println("Usercontent request" + username);
         Statement statement;
         ResultSet rs = null;
         try {

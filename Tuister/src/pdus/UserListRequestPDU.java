@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "userlistrequest")
+@XmlRootElement(name = "user_list_request")
 @XmlAccessorType(XmlAccessType.NONE)
 public class UserListRequestPDU extends PDU {
 

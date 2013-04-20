@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "followingusersrequest")
+@XmlRootElement(name = "following_users_request")
 @XmlAccessorType(XmlAccessType.NONE)
 public class FollowingUsersRequestPDU extends PDU {
 

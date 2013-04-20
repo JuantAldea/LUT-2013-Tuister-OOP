@@ -85,13 +85,13 @@ public class PDUAuthHandler extends StateHandler {
         } else if (qName.equalsIgnoreCase("unfollow")) {
             System.out.println("Tag: " + qName);
             this.onUnFollow(attributes);
-        } else if (qName.equalsIgnoreCase("followingusersrequest")) {
+        } else if (qName.equalsIgnoreCase("following_users_request")) {
             System.out.println("Tag: " + qName);
             this.onFollowingUsersRequest(attributes);
-        } else if (qName.equalsIgnoreCase("userlistrequest")) {
+        } else if (qName.equalsIgnoreCase("user_list_request")) {
             System.out.println("Tag: " + qName);
             this.onUserListRequest(attributes);
-        } else if (qName.equalsIgnoreCase("usercontentrequest")) {
+        } else if (qName.equalsIgnoreCase("user_content_request")) {
             System.out.println("Tag: " + qName);
             this.onUserContentRequest(attributes);
         } else {

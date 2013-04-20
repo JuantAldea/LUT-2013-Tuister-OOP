@@ -1,6 +1,8 @@
 package server;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
 
 import javax.xml.bind.JAXBException;
 
@@ -9,6 +11,9 @@ import org.xml.sax.SAXException;
 
 import pdus.AckPDU;
 import pdus.ErrorPDU;
+import pdus.ListBeginPDU;
+import pdus.ListEndPDU;
+import pdus.PostPDU;
 
 public class PDUUnauthHandler extends StateHandler {
 
@@ -31,7 +36,8 @@ public class PDUUnauthHandler extends StateHandler {
             return userID;
         }
 
-        userID = this.context.getDatabase().registerUser(attributes.getValue("username"), attributes.getValue("password"));
+        userID = this.context.getDatabase().registerUser(attributes.getValue("username"),
+                attributes.getValue("password"));
         if (userID != -1) {
             try {
                 this.context.send(new AckPDU("register").toXML());
@@ -77,8 +83,19 @@ public class PDUUnauthHandler extends StateHandler {
     protected void onUserContentRequest(Attributes attributes) {
         ResultSet rs = this.context.getDatabase().userContentRequest(attributes.getValue("username"));
         try {
-            this.context.send(new AckPDU("QUE NO TE FALTE DE NADA NIÑO").toXML());
+            this.context.send(new ListBeginPDU().toXML());
+            while (rs.next()) {
+                // public PostPDU(String text, String author, Integer likes, Date date, Integer id) {
+                PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"),
+                        rs.getDate("post_date"), rs.getInt("id"));
+                System.out.println(post.toXML());
+                this.context.send(post.toXML());
+            }
+            this.context.send(new ListEndPDU().toXML());
         } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -92,7 +109,7 @@ public class PDUUnauthHandler extends StateHandler {
         } else if (qName.equalsIgnoreCase("login")) {
             System.out.println("Tag: " + qName);
             this.onLogin(attributes);
-        } else if (qName.equalsIgnoreCase("usercontentrequest")) {
+        } else if (qName.equalsIgnoreCase("user_content_request")) {
             System.out.println("Tag: " + qName);
             this.onUserContentRequest(attributes);
         } else {

@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "usercontentrequest")
+@XmlRootElement(name = "user_content_request")
 @XmlAccessorType(XmlAccessType.NONE)
 public class UserContentRequestPDU extends PDU {
     @XmlAttribute(name = "username")
