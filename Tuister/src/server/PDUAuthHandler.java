@@ -40,11 +40,11 @@ public class PDUAuthHandler extends StateHandler {
     }
 
     protected void onLike(Attributes attributes) {
-        this.printAttributes(attributes);
+        this.context.getDatabase().like(this.context.userID, Integer.parseInt(attributes.getValue("postid")));
     }
 
     protected void onUnlike(Attributes attributes) {
-        this.printAttributes(attributes);
+        this.context.getDatabase().unLike(this.context.userID, Integer.parseInt(attributes.getValue("postid")));
     }
 
     protected void onFollow(Attributes attributes) {
