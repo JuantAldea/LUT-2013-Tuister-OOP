@@ -80,28 +80,6 @@ public class PDUUnauthHandler extends StateHandler {
         }
     }
 
-    protected void onUserContentRequest(Attributes attributes) {
-        ResultSet rs = this.context.getDatabase().userContentRequest(attributes.getValue("username"));
-        try {
-            this.context.send(new ListBeginPDU().toXML());
-            while (rs.next()) {
-                // public PostPDU(String text, String author, Integer likes, Date date, Integer id) {
-                PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"),
-                        rs.getDate("post_date"), rs.getInt("id"));
-                System.out.println(post.toXML());
-                this.context.send(post.toXML());
-            }
-            this.context.send(new ListEndPDU().toXML());
-        } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        this.printAttributes(attributes);
-    }
-
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         if (qName.equalsIgnoreCase("register")) {
             System.out.println("Tag: " + qName);

@@ -63,10 +63,6 @@ public class PDUAuthHandler extends StateHandler {
         this.printAttributes(attributes);
     }
 
-    protected void onUserContentRequest(Attributes attributes) {
-        this.printAttributes(attributes);
-    }
-
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         if (qName.equalsIgnoreCase("publish")) {
             this.onPublish(attributes);
