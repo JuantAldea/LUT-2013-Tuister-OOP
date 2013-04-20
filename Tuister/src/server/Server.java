@@ -1,6 +1,10 @@
 package server;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -11,6 +15,12 @@ import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.SAXException;
 
 public class Server implements Runnable {
     protected Selector selector = null;
@@ -37,7 +47,7 @@ public class Server implements Runnable {
             server.configureBlocking(false);
             server.socket().setReuseAddress(true);
             selector = Selector.open();
-            XMLParser parser = new XMLParser();
+            SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
             while (serverState.isRunning()) {
                 // register everyone in the selector
                 server.register(selector, SelectionKey.OP_ACCEPT);
@@ -75,6 +85,13 @@ public class Server implements Runnable {
                             buf.clear();
                             String pdu = new String(byteArray);
                             System.out.println(pdu);
+                            InputStream is = new ByteArrayInputStream(byteArray);
+                            try {
+                                saxParser.parse(is, new XMLRootHandler());
+                            } catch (SAXException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
 
                         } else {
                             // !isConnected => disconnected!!!1
@@ -93,6 +110,12 @@ public class Server implements Runnable {
             selector.close();
 
         } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (ParserConfigurationException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (SAXException e1) {
+            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
     }
