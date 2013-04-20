@@ -51,9 +51,9 @@ public class ServerWorkerThread implements Runnable {
                 // wait for activity
                 selector.select();
                 if (socket.isConnected()) {
-                    // activity + socket connected => is talking
                     int received_bytes = socket.read(buf);
                     if (received_bytes < 0) {
+                        // client disconnected, finish everything
                         running = false;
                         break;
                     }
@@ -70,6 +70,7 @@ public class ServerWorkerThread implements Runnable {
                         e.printStackTrace();
                     }
                 } else {
+                    // socket not connected, finish everything
                     running = false;
                     break;
                 }
