@@ -2,9 +2,9 @@ package server;
 
 public class ServerWorkerStateUnauthenticated extends ServerWorkerState {
 
-    public ServerWorkerStateUnauthenticated(ServerWorkerThread context) {
+    public ServerWorkerStateUnauthenticated(ServerWorker context) {
         super(context);
-        this.handler = new PDUUnauthHandler();
+        this.handler = new PDUUnauthHandler(context);
     }
 
 }

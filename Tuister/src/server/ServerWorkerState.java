@@ -6,20 +6,18 @@ import java.io.InputStream;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 abstract public class ServerWorkerState {
-    protected ServerWorkerThread context;
+    protected ServerWorker context;
     protected SAXParser saxParser = null;
-    protected DefaultHandler handler = null;
+    protected StateHandler handler = null;
 
     @SuppressWarnings("unused")
     private ServerWorkerState() {
     }
 
-    public ServerWorkerState(ServerWorkerThread context) {
+    public ServerWorkerState(ServerWorker context) {
         this.context = context;
         try {
             saxParser = SAXParserFactory.newInstance().newSAXParser();

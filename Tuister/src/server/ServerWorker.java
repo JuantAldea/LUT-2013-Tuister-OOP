@@ -10,7 +10,7 @@ import java.nio.channels.SocketChannel;
 
 import org.xml.sax.SAXException;
 
-public class ServerWorkerThread implements Runnable {
+public class ServerWorker implements Runnable {
     protected Integer userID;
     protected SocketChannel socket;
     protected Selector selector = null;
@@ -20,12 +20,12 @@ public class ServerWorkerThread implements Runnable {
     protected boolean running = true;
 
     @SuppressWarnings("unused")
-    private ServerWorkerThread() {
+    private ServerWorker() {
         this.STATE_AUTH = null;
         this.STATE_UNAUTH = null;
     }
 
-    public ServerWorkerThread(SocketChannel socket) {
+    public ServerWorker(SocketChannel socket) {
         this.socket = socket;
         this.STATE_UNAUTH = new ServerWorkerStateUnauthenticated(this);
         this.STATE_AUTH = new ServerWorkerStateAuthenticated(this);

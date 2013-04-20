@@ -39,7 +39,7 @@ public class Server implements Runnable {
                 server.register(selector, SelectionKey.OP_ACCEPT);
                 // wait for activity
                 selector.select();
-                new Thread(new ServerWorkerThread(server.accept())).start();
+                new Thread(new ServerWorker(server.accept())).start();
             }
             clientList.clear();
             server.close();

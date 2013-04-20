@@ -2,8 +2,8 @@ package server;
 
 public class ServerWorkerStateAuthenticated extends ServerWorkerState {
 
-    public ServerWorkerStateAuthenticated(ServerWorkerThread context) {
+    public ServerWorkerStateAuthenticated(ServerWorker context) {
         super(context);
-        this.handler = new PDUAuthHandler();
+        this.handler = new PDUAuthHandler(context);
     }
 }
