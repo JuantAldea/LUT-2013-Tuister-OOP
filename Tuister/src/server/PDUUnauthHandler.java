@@ -51,7 +51,6 @@ public class PDUUnauthHandler extends StateHandler {
     }
 
     protected void onLogin(Attributes attributes) {
-
         Integer id = this.context.getDatabase().login(attributes.getValue("username"), attributes.getValue("password"));
         if (id != -1) {
             this.context.userID = id;

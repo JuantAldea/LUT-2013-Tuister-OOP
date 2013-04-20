@@ -1,7 +1,11 @@
 package server;
 
+import javax.xml.bind.JAXBException;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+
+import pdus.AckPDU;
 
 public class PDUAuthHandler extends StateHandler {
 
@@ -16,6 +20,14 @@ public class PDUAuthHandler extends StateHandler {
     protected void onLogout(Attributes attributes) {
         this.printAttributes(attributes);
         this.context.changeStateToUnauthenticated();
+        try {
+            this.context.send(new AckPDU("logout").toXML());
+        } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        this.context.running = false;
+        this.context.selector.wakeup();
     }
 
     protected void onLike(Attributes attributes) {
