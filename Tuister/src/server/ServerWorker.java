@@ -18,6 +18,7 @@ public class ServerWorker implements Runnable {
     protected final ServerWorkerStateAuthenticated STATE_AUTH;
     protected ServerWorkerState state = null;
     protected boolean running = true;
+    protected DatabaseWrapper database = DatabaseWrapper.getInstance();
 
     @SuppressWarnings("unused")
     private ServerWorker() {
@@ -40,6 +41,10 @@ public class ServerWorker implements Runnable {
         this.state = this.STATE_UNAUTH;
     }
 
+    public DatabaseWrapper getDatabase() {
+        return this.database;
+    }
+
     public void send(String msg) {
         ByteBuffer buf = ByteBuffer.allocate(msg.length()).order(ByteOrder.BIG_ENDIAN);
         buf.clear();
@@ -60,9 +65,11 @@ public class ServerWorker implements Runnable {
             ByteBuffer buf = ByteBuffer.allocate(socket.socket().getReceiveBufferSize()).order(ByteOrder.BIG_ENDIAN);
             this.socket.configureBlocking(false);
             while (running) {
+                System.out.println(this.state.toString());
+                System.out.println(this.running);
                 socket.register(selector, SelectionKey.OP_READ);
                 // wait for activity
-                System.out.println(this.state.toString());
+                
                 selector.select();
                 if (socket.isConnected()) {
                     int received_bytes = socket.read(buf);

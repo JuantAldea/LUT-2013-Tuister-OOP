@@ -19,5 +19,6 @@ abstract public class StateHandler extends DefaultHandler {
 
     public StateHandler(ServerWorker context) {
         this.context = context;
+        this.context.getDatabase();
     }
 }

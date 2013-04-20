@@ -8,13 +8,11 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.HashMap;
 
 public class Server implements Runnable {
     protected Selector selector = null;
     protected ServerSocketChannel server = null;
     protected ServerState serverState = ServerState.getInstance();
-    protected HashMap<SocketChannel, Integer> clientList = new HashMap<SocketChannel, Integer>();
 
     public Server() {
 
@@ -29,6 +27,7 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
+        DatabaseWrapper.getInstance();
         try {
             server = ServerSocketChannel.open();
             server.socket().bind(new InetSocketAddress(serverState.getListeningPort()));
@@ -41,7 +40,6 @@ public class Server implements Runnable {
                 selector.select();
                 new Thread(new ServerWorker(server.accept())).start();
             }
-            clientList.clear();
             server.close();
             selector.close();
 

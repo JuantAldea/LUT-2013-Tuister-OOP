@@ -6,6 +6,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import pdus.AckPDU;
+import pdus.ErrorPDU;
 
 public class PDUUnauthHandler extends StateHandler {
 
@@ -21,18 +22,43 @@ public class PDUUnauthHandler extends StateHandler {
             e.printStackTrace();
         }
         this.printAttributes(attributes);
+        Integer userID = this.context.getDatabase().registerUser(attributes.getValue("username"), attributes.getValue("password"));
+        if (userID != -1) {
+            this.context.getDatabase().login(attributes.getValue("username"), attributes.getValue("password"));
+        } else {
+            try {
+                this.context.send(new ErrorPDU("Username already in use").toXML());
+                this.context.running = false;
+                this.context.selector.wakeup();
+            } catch (JAXBException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 
     protected void onLogin(Attributes attributes) {
 
-        try {
-            this.context.send(new AckPDU().toXML());
-        } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        Integer id = this.context.getDatabase().login(attributes.getValue("username"), attributes.getValue("password"));
+        if (id != -1) {
+            this.context.userID = id;
+            this.context.changeStateToAuthenticated();
+            try {
+                this.context.send(new AckPDU().toXML());
+            } catch (JAXBException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else {
+            this.context.running = false;
+            try {
+                this.context.send(new ErrorPDU("Username or password invalid").toXML());
+            } catch (JAXBException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            this.context.selector.wakeup();
         }
-        this.context.changeStateToAuthenticated();
-        this.printAttributes(attributes);
     }
 
     protected void onUserContentRequest(Attributes attributes) {
