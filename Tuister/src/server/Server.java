@@ -26,7 +26,7 @@ public class Server implements Runnable {
     protected Selector selector = null;
     protected ServerSocketChannel server = null;
     protected ServerState serverState = ServerState.getInstance();
-    protected HashMap<Integer, SocketChannel> clientList = new HashMap<Integer, SocketChannel>();
+    protected HashMap<SocketChannel, Integer> clientList = new HashMap<SocketChannel, Integer>();
 
     public Server() {
 
@@ -51,8 +51,8 @@ public class Server implements Runnable {
             while (serverState.isRunning()) {
                 // register everyone in the selector
                 server.register(selector, SelectionKey.OP_ACCEPT);
-                for (Entry<Integer, SocketChannel> client : clientList.entrySet()) {
-                    client.getValue().register(selector, SelectionKey.OP_READ);
+                for (Entry<SocketChannel, Integer> client : clientList.entrySet()) {
+                    client.getKey().register(selector, SelectionKey.OP_READ);
                 }
 
                 // wait for activity
@@ -68,7 +68,7 @@ public class Server implements Runnable {
                         if (serverState.getAcceptingNewConnections()) {
                             newClientSocket.configureBlocking(false);
                             Integer clientID = 123;
-                            clientList.put(clientID, newClientSocket);
+                            clientList.put(newClientSocket, clientID);
                         } else {
                             newClientSocket.close();
                         }
@@ -101,8 +101,8 @@ public class Server implements Runnable {
                 }
             }
             // shutting down the server, so clean up everything
-            for (Entry<Integer, SocketChannel> client : clientList.entrySet()) {
-                client.getValue().close();
+            for (Entry<SocketChannel, Integer> client : clientList.entrySet()) {
+                client.getKey().close();
             }
 
             clientList.clear();
