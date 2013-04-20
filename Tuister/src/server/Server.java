@@ -87,7 +87,7 @@ public class Server implements Runnable {
                             System.out.println(pdu);
                             InputStream is = new ByteArrayInputStream(byteArray);
                             try {
-                                saxParser.parse(is, new XMLRootHandler());
+                                saxParser.parse(is, new PDUUnauthHandler());
                             } catch (SAXException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
