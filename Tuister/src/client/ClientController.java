@@ -12,18 +12,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
-import javax.xml.bind.JAXBException;
-
-import pdus.FollowPDU;
-import pdus.FollowingUsersRequestPDU;
-import pdus.LikePDU;
-import pdus.LoginPDU;
-import pdus.LogoutPDU;
-import pdus.PublishPDU;
-import pdus.RegisterPDU;
-import pdus.UnfollowPDU;
-import pdus.UserContentRequestPDU;
-import pdus.UserListRequestPDU;
+import clientStates.ClientState;
 
 public class ClientController implements Runnable{
 	private String host = "127.0.0.1";
@@ -32,18 +21,18 @@ public class ClientController implements Runnable{
 	private SocketChannel socket = null;
 	private Selector selector = null;
 	
-	private GUI gui = null;
+	public GUI gui = null;
 	private ClientModel model = null;
+	private ClientState state = null;
+	
 	private boolean active = true;
 	
 	public ClientController(){
 		this.gui = new GUI(this);
-		
-		this.model = new ClientModel();
+		this.model = new ClientModel(this);
+		this.state = new ClientState(this);
 		
 		try {
-			this.socket = SocketChannel.open(new InetSocketAddress(host, port));
-			this.socket.configureBlocking(false);
 			this.selector = Selector.open();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -51,115 +40,48 @@ public class ClientController implements Runnable{
 		}
 	}
 
-	public void register(String user, String password) {
-		try {
-			this.sendToServer(new RegisterPDU(user, password).toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void register(String username, String password) {
+		this.state.register(username, password);
 	}
 	
 	public void login(String username, String password) {
-		try {
-			this.sendToServer(new LoginPDU(username, password).toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.state.login(username, password);
 	}
 	
 	public void logout() {
-		try {
-			this.sendToServer(new LogoutPDU().toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.state.logout();
 	}
 	
 	public void publish(String text) {
-		try {
-			this.sendToServer(new PublishPDU(text).toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.state.publish(text);
 	}
 	
 	public void follow(String username) {
-		try {
-			this.sendToServer(new FollowPDU(username).toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.state.follow(username);
 	}
 
 	public void unfollow(String username) {
-		try {
-			this.sendToServer(new UnfollowPDU(username).toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		this.state.unfollow(username);
 	}
 
 	public void like(String string) {
-		try {
-			this.sendToServer(new LikePDU(this.model.postID(string)).toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.state.like(string);
 	}
 
 	public void unlike(String string) {
-		try {
-			this.sendToServer(new LikePDU(this.model.postID(string)).toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.state.unlike(string);
 	}
 
 	public void following() {
-		try {
-			this.sendToServer(new FollowingUsersRequestPDU().toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.state.following();
 	}
 
 	public void userContent(String username) {
-		try {
-			this.sendToServer(new UserContentRequestPDU(username).toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.state.userContent(username);
 	}
 	
 	public void listUsers() {
-		try {
-			this.sendToServer(new UserListRequestPDU().toXML());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.state.listUsers();
 	}
 	
 	public void exit() {
@@ -169,13 +91,28 @@ public class ClientController implements Runnable{
 		this.selector.wakeup();
 	}
 	
-	private void sendToServer(String string) throws IOException {
+	public void connectToServer() {
+		try {
+			this.socket = SocketChannel.open(new InetSocketAddress(host, port));
+			this.socket.configureBlocking(false);
+		} catch (IOException e) {
+			this.gui.errorOpeningSocket();
+			this.exit();
+		}
+	}
+	
+	public void sendToServer(String string) {
 		ByteBuffer buffer = ByteBuffer.allocate(string.length()).order(ByteOrder.BIG_ENDIAN);
 		buffer.clear();
 		buffer.put(string.getBytes());
 		buffer.flip();
-		while(buffer.hasRemaining()){
-			this.socket.write(buffer);
+		
+		try {
+			while(buffer.hasRemaining()){
+				this.socket.write(buffer);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -188,36 +125,38 @@ public class ClientController implements Runnable{
 		ByteBuffer buffer = null;
 		
 		while (this.active){
-			try {
-				buffer = ByteBuffer.allocate(this.socket.socket().getReceiveBufferSize()).order(ByteOrder.BIG_ENDIAN);
-				this.socket.register(selector, SelectionKey.OP_READ);
-				selector.select();
-			} catch (ClosedChannelException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (this.socket != null){
+				try {
+					buffer = ByteBuffer.allocate(this.socket.socket().getReceiveBufferSize()).order(ByteOrder.BIG_ENDIAN);
+					this.socket.register(selector, SelectionKey.OP_READ);
+					selector.select();
+				} catch (ClosedChannelException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		        Iterator<SelectionKey> it = selector.selectedKeys().iterator();
+		        
+		        while (it.hasNext()) {
+		        	SelectionKey selKey = it.next();
+		            it.remove();
+		            if (selKey.isReadable()) {
+		            	SocketChannel s = (SocketChannel) selKey.channel();
+		            	int r = 0;
+		                try {
+							r = s.read(buffer);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+		                
+		                if (r <= 0){
+		                	this.exit();
+		                } else {
+		                	this.model.processData(buffer);
+		                }
+		            }
+		        }
 			}
-	        Iterator<SelectionKey> it = selector.selectedKeys().iterator();
-	        
-	        while (it.hasNext()) {
-	        	SelectionKey selKey = it.next();
-	            it.remove();
-	            if (selKey.isReadable()) {
-	            	SocketChannel s = (SocketChannel) selKey.channel();
-	            	int r = 0;
-	                try {
-						r = s.read(buffer);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-	                
-	                if (r <= 0){
-	                	this.exit();
-	                } else {
-	                	this.model.processData(buffer);
-	                }
-	            }
-	        }
 		}
 	}
 	

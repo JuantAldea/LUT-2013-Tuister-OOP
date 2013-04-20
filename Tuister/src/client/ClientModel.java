@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 public class ClientModel {
 	
-	public ClientModel() {
+	public ClientModel(ClientController clientController) {
         
     }
 
