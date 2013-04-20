@@ -110,8 +110,11 @@ public class GUI implements Runnable {
 				this.printHelp();
 			}
 		} else if (inputSplit[0].equalsIgnoreCase("exit")){
-			this.deactivate();
-			// TODO Exit
+			if (inputSplit.length == 1){
+				this.controller.exit();
+			} else {
+				this.printHelp();
+			}
 		} else {
 			this.printHelp();
 		}

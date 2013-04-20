@@ -13,10 +13,11 @@ public class ClientModel {
 	}
 
 	public void processData(ByteBuffer buffer) {
+		buffer.position(0);
 		byte[] byteArray = new byte[buffer.remaining()];
 		buffer.get(byteArray);
 		String s = new String(byteArray);
 		
-		System.out.println(s);
+		System.out.println(" + " + s);
 	}
 }
