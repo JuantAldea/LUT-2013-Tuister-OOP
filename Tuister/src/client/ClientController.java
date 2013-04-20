@@ -18,6 +18,7 @@ import pdus.FollowPDU;
 import pdus.FollowingUsersRequestPDU;
 import pdus.LikePDU;
 import pdus.LoginPDU;
+import pdus.LogoutPDU;
 import pdus.PublishPDU;
 import pdus.RegisterPDU;
 import pdus.UnfollowPDU;
@@ -63,6 +64,16 @@ public class ClientController implements Runnable{
 	public void login(String username, String password) {
 		try {
 			this.sendToServer(new LoginPDU(username, password).toXML());
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logout() {
+		try {
+			this.sendToServer(new LogoutPDU().toXML());
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
