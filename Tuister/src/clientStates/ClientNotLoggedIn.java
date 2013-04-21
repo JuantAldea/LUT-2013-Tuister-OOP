@@ -100,6 +100,9 @@ public class ClientNotLoggedIn extends State {
 	}
 
 	public State userContent(String username) {
+		
+		this.controller.connectToServer();
+		
 		try {
 			this.controller.sendToServer(new UserContentRequestPDU(username).toXML());
 		} catch (JAXBException e) {

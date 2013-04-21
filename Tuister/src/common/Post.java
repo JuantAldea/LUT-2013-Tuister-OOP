@@ -1,11 +1,10 @@
 package common;
 
-import java.util.Date;
 
 public class Post {
     protected String text;
     protected String author;
-    protected Date date;
+    protected String date;
     protected Integer id;
     protected Integer likes;
 
@@ -13,12 +12,16 @@ public class Post {
     private Post() {
     }
 
-    public Post(String text, String author, Integer likes, Date date, Integer id) {
+    public Post(String text, String author, Integer likes, String date, Integer id) {
         this.text = text;
         this.author = author;
         this.likes = likes;
-        this.date = new Date();
+        this.date = date;
         this.id = id;
+    }
+    
+    public Integer getId(){
+    	return this.id;
     }
 
     public String toString() {

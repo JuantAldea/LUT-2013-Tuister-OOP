@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import common.Post;
+import common.User;
+
 
 public class GUI implements Runnable {
 	private ClientController controller = null;
@@ -187,5 +190,30 @@ public class GUI implements Runnable {
 
 	public void errorAlreadyLoggedIn() {
 		System.out.println("You are already logged in.");
+	}
+
+
+	public void disconneceted() {
+		System.out.println("You are disconnected.");
+	}
+
+
+	public void errorReceived(String value) {
+		System.out.println("ERROR: " + value);
+	}
+
+
+	public void printPost(int localId, Post p) {
+		System.out.println("[" + localId + "]" + p);
+	}
+
+
+	public void errorPostList() {
+		System.out.println("That element does not exist in the post list.");
+	}
+
+
+	public void printUser(User u) {
+		System.out.println("- " + u);
 	}
 }
