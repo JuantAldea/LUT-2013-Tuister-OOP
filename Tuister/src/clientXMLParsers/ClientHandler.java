@@ -19,13 +19,17 @@ public class ClientHandler extends DefaultHandler {
             System.out.println("Tag: " + qName);
         } else if (qName.equalsIgnoreCase("error")) {
             System.out.println("Tag: " + qName);
-        } else if (qName.equalsIgnoreCase("list")) {
+        } else if (qName.equalsIgnoreCase("list_begin")) {
             System.out.println("Tag: " + qName);
             if (attributes.getValue("type").equalsIgnoreCase("users")) {
                 System.out.println("HOYGA BIENEN HUSUARIOS");
             } else if (attributes.getValue("type").equalsIgnoreCase("posts")) {
                 System.out.println("HOYGA HAMIJO NESECITO SU HALLUDA");
             }
+        } else if (qName.equalsIgnoreCase("list_end")) {
+            System.out.println("Tag: " + qName);
+            System.out.println("HOYGA HAMIJO CE HACAVO LO QE CE DAVA");
+            
         } else if (qName.equalsIgnoreCase("user")) {
             User user = new User(attributes.getValue("username"));
             System.out.println(user);
@@ -43,4 +47,5 @@ public class ClientHandler extends DefaultHandler {
             System.out.println(post);
         }
     }
+
 }
