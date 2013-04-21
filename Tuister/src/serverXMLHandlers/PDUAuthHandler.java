@@ -10,6 +10,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import pdus.AckPDU;
+import pdus.PostPDU;
 import pdus.UserPDU;
 import server.ServerWorker;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -93,16 +94,25 @@ public class PDUAuthHandler extends StateHandler {
             e.printStackTrace();
         }
         this.sendList(messages, "users");
-
     }
 
     protected void onUpdate() {
-        // TODO NOT IMPLEMENTED
+        ResultSet rs = this.context.getDatabase().update(this.context.getUserID());
+        LinkedList<String> messages = new LinkedList<String>();
         try {
-            throw new NotImplementedException();
-        } catch (NotImplementedException e) {
+            while (rs != null && rs.next()) {
+                PostPDU post = new PostPDU(rs.getString("body"), rs.getString("username"), rs.getInt("likes"), rs.getDate("post_date"),
+                        rs.getInt("id"));
+                messages.add(post.toXML());
+            }
+        } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        this.sendList(messages, "posts");
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
