@@ -27,6 +27,10 @@ public class State {
 		return null;
 	}
 	
+	public State update() {
+		return null;
+	}
+	
 	public State publish(String text) {
 		return null;
 	}

@@ -68,6 +68,12 @@ public class GUI implements Runnable {
 			} else {
 				this.printHelp();
 			}
+		} else if (inputSplit[0].equalsIgnoreCase("update")){
+			if (inputSplit.length == 1){
+				this.controller.update();
+			} else {
+				this.printHelp();
+			}
 		} else if (inputSplit[0].equalsIgnoreCase("publish")){
 			if (inputSplit.length >= 2){
 				this.controller.publish(GUI.join(" ", inputSplit, 1));

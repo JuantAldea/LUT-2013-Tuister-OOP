@@ -1,7 +1,5 @@
 package clientStates;
 
-import java.io.IOException;
-
 import javax.xml.bind.JAXBException;
 
 import pdus.FollowPDU;
@@ -10,6 +8,7 @@ import pdus.LikePDU;
 import pdus.LogoutPDU;
 import pdus.PublishPDU;
 import pdus.UnfollowPDU;
+import pdus.UpdatePDU;
 import pdus.UserContentRequestPDU;
 import pdus.UserListRequestPDU;
 import client.ClientController;
@@ -27,12 +26,7 @@ public class ClientLoggedIn extends State {
 	public State ack(String type) {
 		if (type.equalsIgnoreCase("logout")){
 			this.controller.gui.logoutSuccessful();
-			try {
-				this.controller.socket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			this.controller.socket = null;
+			this.controller.disconnectFromServer();
 			return new ClientNotLoggedIn(this.controller);
 		} else {
 			return this;
@@ -52,6 +46,15 @@ public class ClientLoggedIn extends State {
 	public State logout() {
 		try {
 			this.controller.sendToServer(new LogoutPDU().toXML());
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		return this;
+	}
+	
+	public State update() {
+		try {
+			this.controller.sendToServer(new UpdatePDU().toXML());
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
@@ -120,6 +123,8 @@ public class ClientLoggedIn extends State {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		this.controller.model.waitForListOfPosts();
 		return this;
 	}
 	

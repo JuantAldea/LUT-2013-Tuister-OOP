@@ -30,6 +30,10 @@ public class ClientState {
 		this.currentState = this.currentState.logout();
 	}
 	
+	public void update() {
+		this.currentState = this.currentState.update();
+	}
+	
 	public void publish(String text) {
 		this.currentState = this.currentState.publish(text);
 	}
