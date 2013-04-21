@@ -197,12 +197,29 @@ public class DatabaseWrapper {
         }
     }
 
-    public void followingUsersRequest(Integer userID) {
-
+    public ResultSet followingUsersRequest(Integer userID) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            return statement.executeQuery(String.format("select users.username from users, followers where "
+                    + "users.id=followers.followed " + "and " + "followers.follower=%d", userID));
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public void userListRequest() {
-
+    public ResultSet userListRequest() {
+        try {
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            return statement.executeQuery(String.format("select username from users"));
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public ResultSet userContentRequest(String username) {
@@ -224,5 +241,4 @@ public class DatabaseWrapper {
         }
         return rs;
     }
-
 }

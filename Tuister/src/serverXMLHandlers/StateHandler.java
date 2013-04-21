@@ -2,6 +2,7 @@ package serverXMLHandlers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 import javax.xml.bind.JAXBException;
 
@@ -27,6 +28,20 @@ abstract public class StateHandler extends DefaultHandler {
         }
     }
 
+    protected void sendList(LinkedList<String> list) {
+        try {
+            list.addFirst(new ListBeginPDU().toXML());
+            list.addLast(new ListEndPDU().toXML());
+        } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        for (String msg : list) {
+            this.context.send(msg);
+        }
+
+    }
+
     public StateHandler(ServerWorker context) {
         this.context = context;
         this.context.getDatabase();
@@ -34,15 +49,14 @@ abstract public class StateHandler extends DefaultHandler {
 
     protected void onUserContentRequest(Attributes attributes) {
         ResultSet rs = this.context.getDatabase().userContentRequest(attributes.getValue("username"));
+        LinkedList<String> messages = new LinkedList<String>();
         try {
-            this.context.send(new ListBeginPDU().toXML());
             while (rs != null && rs.next()) {
                 // public PostPDU(String text, String author, Integer likes, Date date, Integer id) {
                 PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"),
                         rs.getDate("post_date"), rs.getInt("id"));
-                this.context.send(post.toXML());
+                messages.add(post.toXML());
             }
-            this.context.send(new ListEndPDU().toXML());
         } catch (JAXBException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -50,6 +64,6 @@ abstract public class StateHandler extends DefaultHandler {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        this.printAttributes(attributes);
+        this.sendList(messages);
     }
 }

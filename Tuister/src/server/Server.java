@@ -2,12 +2,9 @@ package server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
 
 import database.DatabaseWrapper;
 
@@ -15,10 +12,6 @@ public class Server implements Runnable {
     protected Selector selector = null;
     protected ServerSocketChannel server = null;
     protected ServerState serverState = ServerState.getInstance();
-
-    public Server() {
-
-    }
 
     public void wakeUp() {
         if (selector != null) {
@@ -48,14 +41,5 @@ public class Server implements Runnable {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-    }
-
-    protected void sendJoke(SocketChannel client, String joke) throws IOException {
-        ByteBuffer buf = ByteBuffer.allocate(joke.length() + (Integer.SIZE / 8)).order(ByteOrder.BIG_ENDIAN);
-        buf.clear();
-        buf.putInt(joke.length() + (Integer.SIZE / 8));
-        buf.put(joke.getBytes());
-        buf.flip();
-        client.write(buf);
     }
 }
