@@ -29,20 +29,15 @@ public class GUI implements Runnable {
 		System.out.println("Welcome to the Tuister client. Enter \"help\" for detailed instructions of available commands\n");
 	}
 
-
+	
+	/*
+	 * This thread handles the user input, based on the console commands. 
+	 */
 	@Override
 	public void run() {
 		String input = "";
 		
 		while(this.active){
-			/*try {
-				input = this.stdIn.readLine();
-				this.processInput(input);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}*/
-			
-			
 			try {
 				if (this.stdIn.ready()){
 					input = this.stdIn.readLine();
@@ -79,6 +74,10 @@ public class GUI implements Runnable {
 	}
 	
 
+	/*
+	 * The parameters are filtered, and, if everything is right, the order is
+	 * sent to the controller
+	 */
 	public void processInput(String input) {
 		String[] inputSplit = input.split(" ");
 		
@@ -164,17 +163,20 @@ public class GUI implements Runnable {
 			this.printHelp();
 		}
 	}
-	
-	// http://stackoverflow.com/questions/794248/a-method-to-reverse-effect-of-java-string-split
+
+	/*
+	 * Auxiliary function, to join an array of Strings in one only String.
+	 */
 	public static String join(String delimitor, String[] subkeys, int start) {
-	    String result = null;
-	    if(null!=subkeys && subkeys.length>0) {
-	        StringBuffer joinBuffer = new StringBuffer(subkeys[start]);
-	        for(int idx=1;idx<subkeys.length;idx++) {
-	            joinBuffer.append(delimitor).append(subkeys[idx]);
-	        }
-	        result = joinBuffer.toString();
+	    String result = "";
+	    
+	    for (int i = start; i < subkeys.length; i++){
+	    	result += subkeys[i];
+	    	if (i != subkeys.length - 1){
+	    		result += delimitor;
+	    	}
 	    }
+	    
 	    return result;
 	}
 	
@@ -224,7 +226,7 @@ public class GUI implements Runnable {
 
 
 	public void printPost(int localId, Post p) {
-		System.out.println("[" + localId + "]" + p);
+		System.out.println("[" + localId + "] " + p);
 	}
 
 
@@ -235,5 +237,15 @@ public class GUI implements Runnable {
 
 	public void printUser(User u) {
 		System.out.println("- " + u);
+	}
+
+
+	public void exitting() {
+		System.out.println("Exitting.");
+	}
+
+
+	public void unexpectedContentError() {
+		System.out.println("Received unexpected content.");
 	}
 }

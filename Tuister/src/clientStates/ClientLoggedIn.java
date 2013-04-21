@@ -25,6 +25,7 @@ public class ClientLoggedIn extends State {
 	}
 	
 	public State ack(String type) {
+		System.out.println("Done.");
 		if (type.equalsIgnoreCase("logout")){
 			this.controller.gui.logoutSuccessful();
 			this.controller.disconnectFromServer();
@@ -47,6 +48,7 @@ public class ClientLoggedIn extends State {
 	public State logout() {
 		try {
 			this.controller.sendToServer(new LogoutPDU().toXML());
+			this.controller.model.waitForACK();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
@@ -56,44 +58,44 @@ public class ClientLoggedIn extends State {
 	public State update() {
 		try {
 			this.controller.sendToServer(new UpdatePDU().toXML());
+			this.controller.model.waitForListOfPosts();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
-		this.controller.model.waitForListOfPosts();
 		return this;
 	}
 	
 	public State publish(String text) {
 		try {
 			this.controller.sendToServer(new PublishPDU(text).toXML());
+			this.controller.model.waitForACK();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
-		this.controller.model.waitForACK();
 		return this;
 	}
 	
 	public State follow(String username) {
 		try {
 			this.controller.sendToServer(new FollowPDU(username).toXML());
+			this.controller.model.waitForACK();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
-		this.controller.model.waitForACK();
 		return this;
 	}
 
 	public State unfollow(String username) {
 		try {
 			this.controller.sendToServer(new UnfollowPDU(username).toXML());
+			this.controller.model.waitForACK();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
-		this.controller.model.waitForACK();
 		return this;
 	}
 
@@ -104,12 +106,12 @@ public class ClientLoggedIn extends State {
 				this.controller.gui.errorPostList();
 			} else {
 				this.controller.sendToServer(new LikePDU(id).toXML());
+				this.controller.model.waitForACK();
 			}
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
-		this.controller.model.waitForACK();
 		return this;
 	}
 
@@ -120,45 +122,49 @@ public class ClientLoggedIn extends State {
 				this.controller.gui.errorPostList();
 			} else {
 				this.controller.sendToServer(new UnlikePDU(id).toXML());
+				this.controller.model.waitForACK();
 			}
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
-		this.controller.model.waitForACK();
 		return this;
 	}
 
 	public State following() {
 		try {
 			this.controller.sendToServer(new FollowingUsersRequestPDU().toXML());
+			this.controller.model.waitForListOfUsers();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
-		this.controller.model.waitForListOfUsers();
 		return this;
 	}
 
 	public State userContent(String username) {
 		try {
 			this.controller.sendToServer(new UserContentRequestPDU(username).toXML());
+			this.controller.model.waitForListOfPosts();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
-		this.controller.model.waitForListOfPosts();
 		return this;
 	}
 	
 	public State listUsers() {
 		try {
 			this.controller.sendToServer(new UserListRequestPDU().toXML());
+			this.controller.model.waitForListOfUsers();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
-		this.controller.model.waitForListOfUsers();
 		return this;
+	}
+	
+	public State disconnectedFromServer() {
+		return new ClientNotLoggedIn(this.controller);
 	}
 }

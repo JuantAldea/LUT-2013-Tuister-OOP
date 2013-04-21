@@ -62,4 +62,8 @@ public class State {
 	public State listUsers() {
 		return null;
 	}
+
+	public State disconnectedFromServer() {
+		return null;
+	}
 }

@@ -12,6 +12,6 @@ public class User {
     }
 
     public String toString() {
-        return "[Username: " + this.username + "]";
+        return this.username;
     }
 }

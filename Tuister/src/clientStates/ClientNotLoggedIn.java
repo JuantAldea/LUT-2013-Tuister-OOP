@@ -36,11 +36,10 @@ public class ClientNotLoggedIn extends State {
 		
 		try {
 			this.controller.sendToServer(new RegisterPDU(username, password).toXML());
+			this.controller.model.waitForACK();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
-		
-		this.controller.model.waitForACK();
 		return this;
 	}
 	
@@ -51,11 +50,10 @@ public class ClientNotLoggedIn extends State {
 		
 		try {
 			this.controller.sendToServer(new LoginPDU(username, password).toXML());
+			this.controller.model.waitForACK();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
-		
-		this.controller.model.waitForACK();
 		return this;
 	}
 	
@@ -105,16 +103,20 @@ public class ClientNotLoggedIn extends State {
 		
 		try {
 			this.controller.sendToServer(new UserContentRequestPDU(username).toXML());
+			this.controller.model.waitForListOfPosts();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
-		this.controller.model.waitForListOfPosts();
 		return this;
 	}
 	
 	public State listUsers() {
 		this.controller.gui.errorNotLoggedIn();
+		return this;
+	}
+	
+	public State disconnectedFromServer() {
 		return this;
 	}
 }

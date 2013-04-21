@@ -45,14 +45,15 @@ public class ClientModel {
             this.saxParser = SAXParserFactory.newInstance().newSAXParser();
             this.handler = new ClientHandler();
         } catch (ParserConfigurationException e2) {
-            // TODO Auto-generated catch block
             e2.printStackTrace();
         } catch (SAXException e2) {
-            // TODO Auto-generated catch block
             e2.printStackTrace();
         }
     }
 
+	/*
+	 * Gets the global ID of a post specified by the local ID shown in the list
+	 */
 	public Integer postID(String string) {
 		if (postList == null){
 			return -1;
@@ -71,6 +72,9 @@ public class ClientModel {
 		}
 	}
 
+	/*
+	 * The model receives the data from the controller, and process it as needed.
+	 */
 	public void processData(int received_bytes, ByteBuffer buffer) throws SAXException, IOException {
 		if (received_bytes <= 0){
 			this.controller.disconnectFromServer();
@@ -81,11 +85,14 @@ public class ClientModel {
 			buffer.get(byteArray, 0, received_bytes);
 			buffer.clear();
 			
+			/*
+			 * More than one valid xml can be readed at once. They have to be split.
+			 */
 			String inputString = new String(byteArray);
 			String[] splitInput = inputString.split(">");
 			
 			for (int i = 0; i < splitInput.length; i++){
-				if (splitInput[i].equals("\n")) continue; // Debugging
+				if (splitInput[i].equals("\n")) continue; // For debugging purposes
 				String part = splitInput[i] + ">";
 				byte[] bytePart = part.getBytes();
 				
@@ -94,16 +101,21 @@ public class ClientModel {
 		            
 		            String name = this.handler.getName();
 		            
+		            // If an error is received
 		            if (name.equalsIgnoreCase("error")){
 		            	this.controller.gui.errorReceived(this.handler.getAttributes().getValue("reason"));
 		            }
 		            
+		            // If the model is waiting for an ack, and it is received
 		            else if (this.status == 1 && name.equalsIgnoreCase("ack")){
 		            	this.controller.ack(this.handler.getAttributes().getValue("type"));
 		            	this.status = 0;
 		            }
 		            
+		         // If the model is waiting for a post list, and it is received
 		            else if (this.status == 2){
+		            	
+		            	// Start of the list
 		            	if (this.listStatus == 0
 		            			&& name.equalsIgnoreCase("list_begin")
 		            			&& this.handler.getAttributes().getValue("type").equalsIgnoreCase("posts")){
@@ -113,10 +125,9 @@ public class ClientModel {
 		            		this.listStatus = 1;
 		            	}
 		            	
+		            	// For every element of the list...
 		            	else if (this.listStatus == 1
 		            			&& name.equalsIgnoreCase("post")){
-		            		
-		            		System.out.println(this.handler.getAttributes().getValue("text"));
 		            		
 		            		Post p = new Post(this.handler.getAttributes().getValue("text"),
 		            				this.handler.getAttributes().getValue("author"),
@@ -128,6 +139,7 @@ public class ClientModel {
 
 		            	}
 		            	
+		            	// End of the list
 		            	else if (this.listStatus == 1
 		            			&& name.equalsIgnoreCase("list_end")){
 		            		
@@ -145,11 +157,14 @@ public class ClientModel {
 		            	}
 		            	
 		            	else {
-		            		// Unexpected
+		            		this.controller.gui.unexpectedContentError();
 		            	}
 		            }
 		            
+		         // If the model is waiting for an user list, and it is received
 		            else if (this.status == 3){
+		            	
+		            	// Start of the list
 		            	if (this.listStatus == 0
 		            			&& name.equalsIgnoreCase("list_begin")
 		            			&& this.handler.getAttributes().getValue("type").equalsIgnoreCase("users")){
@@ -158,32 +173,30 @@ public class ClientModel {
 		            		this.listStatus = 1;
 		            	}
 		            	
+		            	// For every element of the list...
 		            	else if (this.listStatus == 1
 		            			&& name.equalsIgnoreCase("user")){
-		            		
-		            		// TODO acumula usuarios
+
 		            		User u = new User(this.handler.getAttributes().getValue("username"));
 		            		this.controller.gui.printUser(u);
 		            		
 		            	}
 		            	
+		            	// End of the list
 		            	else if (this.listStatus == 1
 		            			&& name.equalsIgnoreCase("list_end")){
 		            		
 		            		this.listStatus = 0;
 		            		this.status = 0;
-		            		// TODO saca los usuarios
 		            	}
 		            	
 		            	else {
-		            		// Unexpected
-		            		// TODO
-		            		
+		            		this.controller.gui.unexpectedContentError();
 		            	}
 		            }
 		            
 		            else {
-		            	// Unexpected
+		            	this.controller.gui.unexpectedContentError();
 		            }
 		        }
 			}
