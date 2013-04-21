@@ -36,15 +36,16 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        if (args.length >= 2 && args[0] == "0") {
+        if (args.length >= 2 && args[0].equalsIgnoreCase("0")) {
             // server mode
             Integer port = Main.validPort(args[1]);
+
             if (port != -1) {
                 ServerMain.main(port);
             } else {
                 System.out.println("Invalid port");
             }
-        } else if (args.length >= 3 && args[0] == "1") {
+        } else if (args.length >= 3 && args[0].equalsIgnoreCase("1")) {
             // client mode
             if (!isValidIPv4(args[1])) {
                 System.out.println("Invalid IP");
