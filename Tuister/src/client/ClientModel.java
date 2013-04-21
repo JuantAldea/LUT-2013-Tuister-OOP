@@ -3,9 +3,6 @@ package client;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -60,8 +57,13 @@ public class ClientModel {
 		if (postList == null){
 			return -1;
 		} else {
-			Integer id = this.postList.get(Integer.parseInt(string)).getId();
-			return id;
+			Integer localId = Integer.parseInt(string);
+			if (localId < 1 || localId > this.postList.size()){
+				return -1;
+			} else {
+				Integer id = this.postList.get(this.postList.size() - localId).getId();
+				return id;
+			}
 		}
 	}
 
@@ -112,18 +114,10 @@ public class ClientModel {
 		            		
 		            		System.out.println(this.handler.getAttributes().getValue("text"));
 		            		
-		            		SimpleDateFormat dateParser = new SimpleDateFormat();
-		            		Date date = new Date();
-		            		try {
-								date = dateParser.parse(this.handler.getAttributes().getValue("date"));
-							} catch (ParseException e) {
-								e.printStackTrace();
-							}
-		            		
 		            		Post p = new Post(this.handler.getAttributes().getValue("text"),
 		            				this.handler.getAttributes().getValue("author"),
 		            				Integer.parseInt(this.handler.getAttributes().getValue("likes")),
-		            				date,
+		            				this.handler.getAttributes().getValue("date"),
 		            				Integer.parseInt(this.handler.getAttributes().getValue("id")));
 		            		
 		            		this.postList.add(p);
@@ -134,7 +128,7 @@ public class ClientModel {
 		            			&& name.equalsIgnoreCase("list_end")){
 		            		
 		            		Iterator<Post> it = this.postList.iterator();
-		            		int localId = postList.size();
+		            		int localId = postList.size() + 1;
 		            		
 		            		while (it.hasNext()){
 		            			localId -= 1;

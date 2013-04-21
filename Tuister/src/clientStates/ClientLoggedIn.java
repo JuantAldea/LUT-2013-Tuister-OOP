@@ -101,7 +101,7 @@ public class ClientLoggedIn extends State {
 		try {
 			Integer id = this.controller.model.postID(string);
 			if (id < 0){
-				this.controller.gui.errorNoPostList();
+				this.controller.gui.errorPostList();
 			} else {
 				this.controller.sendToServer(new LikePDU(id).toXML());
 			}
@@ -117,7 +117,7 @@ public class ClientLoggedIn extends State {
 		try {
 			Integer id = this.controller.model.postID(string);
 			if (id < 0){
-				this.controller.gui.errorNoPostList();
+				this.controller.gui.errorPostList();
 			} else {
 				this.controller.sendToServer(new UnlikePDU(id).toXML());
 			}

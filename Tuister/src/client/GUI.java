@@ -208,8 +208,8 @@ public class GUI implements Runnable {
 	}
 
 
-	public void errorNoPostList() {
-		System.out.println("There is no post list.");
+	public void errorPostList() {
+		System.out.println("That element does not exist in the post list.");
 	}
 
 
