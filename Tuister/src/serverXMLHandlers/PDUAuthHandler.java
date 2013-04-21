@@ -10,55 +10,95 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import pdus.AckPDU;
+import pdus.ErrorPDU;
+import pdus.PostPDU;
 import pdus.UserPDU;
 import server.ServerWorker;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class PDUAuthHandler extends StateHandler {
+public class PDUAuthHandler extends PDUHandler {
 
     public PDUAuthHandler(ServerWorker context) {
         super(context);
     }
 
     protected void onPublish(Attributes attributes) {
-        if (attributes.getValue("text").length() > 0) {
-            this.context.getDatabase().publish(this.context.getUserID(), attributes.getValue("text"));
-        } else {
-            try {
-                this.context.send(new AckPDU("publish").toXML());
-            } catch (JAXBException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+        try {
+            if (attributes.getValue("text").length() == 0) {
+                this.context.send(new ErrorPDU("publish").toXML());
+            } else {
+                boolean result = this.context.getDatabase().publish(this.context.getUserID(), attributes.getValue("text"));
+                if (result) {
+                    this.context.send(new AckPDU("publish").toXML());
+                } else {
+                    this.context.send(new ErrorPDU("publish").toXML());
+                }
             }
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
     }
 
     protected void onLogout(Attributes attributes) {
-        this.printAttributes(attributes);
         this.context.changeStateToUnauthenticated();
         try {
             this.context.send(new AckPDU("logout").toXML());
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         this.context.stop();
     }
 
     protected void onLike(Attributes attributes) {
-        this.context.getDatabase().like(this.context.getUserID(), Integer.parseInt(attributes.getValue("postid")));
+        boolean result = this.context.getDatabase().like(this.context.getUserID(), Integer.parseInt(attributes.getValue("postid")));
+        try {
+            if (result) {
+                this.context.send(new AckPDU("like").toXML());
+            } else {
+                this.context.send(new ErrorPDU("like").toXML());
+            }
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void onUnlike(Attributes attributes) {
-        this.context.getDatabase().unLike(this.context.getUserID(), Integer.parseInt(attributes.getValue("postid")));
+        boolean result = this.context.getDatabase().unLike(this.context.getUserID(), Integer.parseInt(attributes.getValue("postid")));
+        try {
+            if (result) {
+                this.context.send(new AckPDU("unlike").toXML());
+            } else {
+                this.context.send(new ErrorPDU("unlike").toXML());
+            }
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void onFollow(Attributes attributes) {
-        this.context.getDatabase().follow(this.context.getUserID(), attributes.getValue("username"));
+        boolean result = this.context.getDatabase().follow(this.context.getUserID(), attributes.getValue("username"));
+        try {
+            if (result) {
+                this.context.send(new AckPDU("follow").toXML());
+            } else {
+                this.context.send(new ErrorPDU("follow").toXML());
+            }
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void onUnFollow(Attributes attributes) {
-        this.context.getDatabase().unFollow(this.context.getUserID(), attributes.getValue("username"));
+        boolean result = this.context.getDatabase().unFollow(this.context.getUserID(), attributes.getValue("username"));
+        try {
+            if (result) {
+                this.context.send(new AckPDU("unfollow").toXML());
+            } else {
+                this.context.send(new ErrorPDU("unfollow").toXML());
+            }
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void onFollowingUsersRequest(Attributes attributes) {
@@ -93,16 +133,25 @@ public class PDUAuthHandler extends StateHandler {
             e.printStackTrace();
         }
         this.sendList(messages, "users");
-
     }
 
     protected void onUpdate() {
-        // TODO NOT IMPLEMENTED
+        ResultSet rs = this.context.getDatabase().update(this.context.getUserID());
+        LinkedList<String> messages = new LinkedList<String>();
         try {
-            throw new NotImplementedException();
-        } catch (NotImplementedException e) {
+            while (rs != null && rs.next()) {
+                PostPDU post = new PostPDU(rs.getString("body"), rs.getString("username"), rs.getInt("likes"), rs.getString("post_date"),
+                        rs.getInt("id"));
+                messages.add(post.toXML());
+            }
+        } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        this.sendList(messages, "posts");
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {

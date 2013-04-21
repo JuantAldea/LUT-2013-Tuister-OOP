@@ -9,12 +9,12 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import server.ServerWorker;
-import serverXMLHandlers.StateHandler;
+import serverXMLHandlers.PDUHandler;
 
 abstract public class ServerWorkerState {
     protected ServerWorker context;
     protected SAXParser saxParser = null;
-    protected StateHandler handler = null;
+    protected PDUHandler handler = null;
 
     @SuppressWarnings("unused")
     private ServerWorkerState() {
@@ -33,9 +33,15 @@ abstract public class ServerWorkerState {
         }
     }
 
-    public void process(InputStream input) throws SAXException, IOException {
+    public void process(InputStream input) {
         if (this.handler != null) {
-            saxParser.parse(input, this.handler);
+            try {
+                saxParser.parse(input, this.handler);
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
