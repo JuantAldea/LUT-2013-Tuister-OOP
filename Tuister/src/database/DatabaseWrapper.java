@@ -23,7 +23,7 @@ public class DatabaseWrapper {
             e.printStackTrace();
         }
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:tuister2.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:tuister.db");
             this.initDatabase();
         } catch (SQLException e) {
             e.printStackTrace();
