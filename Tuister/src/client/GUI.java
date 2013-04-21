@@ -1,10 +1,9 @@
-package gui;
+package client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import client.ClientController;
 
 public class GUI implements Runnable {
 	private ClientController controller = null;
@@ -24,6 +23,14 @@ public class GUI implements Runnable {
 		String input = "";
 		
 		while(this.active){
+			/*try {
+				input = this.stdIn.readLine();
+				this.processInput(input);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}*/
+			
+			
 			try {
 				if (this.stdIn.ready()){
 					input = this.stdIn.readLine();
