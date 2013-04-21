@@ -1,10 +1,15 @@
 package database;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DatabaseWrapper {
     protected static final DatabaseWrapper singletonInstance = new DatabaseWrapper();
@@ -22,24 +27,35 @@ public class DatabaseWrapper {
             e.printStackTrace();
         }
         try {
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            connection = DriverManager.getConnection("jdbc:sqlite:tuister.db");
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
-            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            connection = DriverManager.getConnection("jdbc:sqlite:tuister2.db");
+            this.initDatabase();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         System.out.println("Connection: " + connection);
+    }
+
+    protected void initDatabase() {
+        ArrayList<String> schema = new ArrayList<String>();
+        schema.add("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username VARCHAR(50) NOT NULL, password VARCHAR(50) NOT NULL,"
+                + "UNIQUE(username) ON CONFLICT ABORT)");
+        schema.add("CREATE TABLE IF NOT EXISTS posts(id INTEGER PRIMARY KEY, body VARCHAR(128) NOT NULL, likes INTEGER NOT NULL DEFAULT 0, "
+                + "post_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, author INTEGER, FOREIGN KEY(author) REFERENCES users(id));");
+        schema.add("CREATE TABLE IF NOT EXISTS likes(user INTEGER, post INTEGER, FOREIGN KEY(user) REFERENCES users(id),"
+                + "FOREIGN KEY(post) REFERENCES post(id), PRIMARY KEY(user, post));");
+        schema.add("CREATE TABLE IF NOT EXISTS followers(follower INTEGER, followed INTEGER, FOREIGN KEY(follower) REFERENCES users(id), "
+                + "FOREIGN KEY(followed) REFERENCES users(id), PRIMARY KEY(follower, followed) ON CONFLICT IGNORE);");
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            for (int i = 0; i < schema.size(); i++) {
+                statement.executeUpdate(schema.get(i));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean registerUser(String username, String password) {
