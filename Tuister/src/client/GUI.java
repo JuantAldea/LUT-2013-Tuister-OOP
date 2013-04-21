@@ -201,12 +201,12 @@ public class GUI implements Runnable {
 
 
 	public void loginSuccessful() {
-		System.out.println("Logged in.");
+		System.out.println("Logged in.\n");
 	}
 
 
 	public void logoutSuccessful() {
-		System.out.println("Logged out.");
+		System.out.println("Logged out.\n");
 	}
 
 
@@ -221,7 +221,7 @@ public class GUI implements Runnable {
 
 
 	public void errorReceived(String value) {
-		System.out.println("ERROR: " + value);
+		System.out.println("ERROR: " + value + "\n");
 	}
 
 
@@ -241,11 +241,16 @@ public class GUI implements Runnable {
 
 
 	public void exitting() {
-		System.out.println("Exitting.");
+		System.out.println("Exitting.\n");
 	}
 
 
 	public void unexpectedContentError() {
 		System.out.println("Received unexpected content.");
+	}
+
+
+	public void done() {
+		System.out.println("Done.");
 	}
 }

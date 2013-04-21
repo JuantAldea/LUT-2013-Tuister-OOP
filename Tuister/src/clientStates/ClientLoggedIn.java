@@ -25,12 +25,12 @@ public class ClientLoggedIn extends State {
 	}
 	
 	public State ack(String type) {
-		System.out.println("Done.");
 		if (type.equalsIgnoreCase("logout")){
 			this.controller.gui.logoutSuccessful();
 			this.controller.disconnectFromServer();
 			return new ClientNotLoggedIn(this.controller);
 		} else {
+			this.controller.gui.done();
 			return this;
 		}
 	}
