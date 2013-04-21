@@ -17,6 +17,15 @@ public class GUI implements Runnable {
 		this.controller = controller;
 		this.stdIn = new BufferedReader(new InputStreamReader(System.in));
 		
+		String logo = "\n     __                               __                      \n" +
+				"    /\\ \\__             __            /\\ \\__                   \n" +
+				"    \\ \\ ,_\\   __  __  /\\_\\      ____ \\ \\  _\\      __    _ __  \n" +
+				"     \\ \\ \\/  /\\ \\/\\ \\ \\/\\ \\    / ,__\\ \\ \\ \\/    / __ \\ /\\  __\\\n" +
+				"      \\ \\ \\_ \\ \\ \\_\\ \\ \\ \\ \\  /\\__,  \\ \\ \\ \\_  /\\ \\__/ \\ \\ \\/ \n" +
+				"       \\ \\__\\ \\ \\____/  \\ \\_\\ \\/\\____/  \\ \\__\\ \\ \\____\\ \\ \\_\\ \n" +
+				"        \\/__/  \\/___/    \\/_/  \\/___/    \\/__/  \\/____/  \\/_/ \n\n";
+		
+		System.out.println(logo);
 		System.out.println("Welcome to the Tuister client. Enter \"help\" for detailed instructions of available commands\n");
 	}
 
@@ -54,11 +63,17 @@ public class GUI implements Runnable {
 		
 		String help = "Available commands:\n" +
 					  "    register <username> <password> -> Adds a new user in the system.\n" +
-					  "    login <username> <password> -> Access with an existing username and password." +
-					  "    logout -> Close the session." +
-					  "    update -> Gets the last posts of the people " +
-					  "    usercontent <username> -> Get the content shared by the specified user. Can be done when not logged in." +
-					  "    ";
+					  "    login <username> <password> -> Access with an existing username and password.\n" +
+					  "    logout -> Closes the session.\n" +
+					  "    update -> Gets the last posts of the people you are following.\n" +
+					  "    publish <text> -> Shares some content with your followers.\n" +
+					  "    follow <username> -> Subscribes to the content of an user.\n" +
+					  "    unfollow <username> -> Unsubscribes to the content of an user.\n" +
+					  "    like <id> -> Marks the comment as something you like.\n" +
+					  "    unlike <id> -> Unmarks the comment as something you like.\n" +
+					  "    following -> Lists the users you are currently following.\n" +
+					  "    usercontent <username> -> Gets the content shared by the specified user. Can be done when not logged in.\n" +
+					  "    listusers -> Lists the users registered in the system.\n";
 		
 		System.out.println(help);
 	}

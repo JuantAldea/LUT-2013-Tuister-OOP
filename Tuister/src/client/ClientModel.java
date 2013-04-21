@@ -57,12 +57,16 @@ public class ClientModel {
 		if (postList == null){
 			return -1;
 		} else {
-			Integer localId = Integer.parseInt(string);
-			if (localId < 1 || localId > this.postList.size()){
+			try {
+				Integer localId = Integer.parseInt(string);
+				if (localId < 1 || localId > this.postList.size()){
+					return -1;
+				} else {
+					Integer id = this.postList.get(this.postList.size() - localId).getId();
+					return id;
+				}
+			} catch (NumberFormatException e) {
 				return -1;
-			} else {
-				Integer id = this.postList.get(this.postList.size() - localId).getId();
-				return id;
 			}
 		}
 	}
