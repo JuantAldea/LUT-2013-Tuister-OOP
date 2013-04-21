@@ -1,15 +1,18 @@
 package server;
 
-import server.State;
-
-public class ServerState extends State {
+public class ServerState implements Cloneable {
     private static final ServerState instance = new ServerState();
     protected boolean acceptingNewConnections = true;
     protected boolean running = false;
     protected int listeningPort = 27015;
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }
+
     private ServerState() {
-        super();
+
     }
 
     public static synchronized ServerState getInstance() {
