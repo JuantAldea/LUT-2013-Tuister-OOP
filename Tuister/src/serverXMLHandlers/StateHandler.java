@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import javax.xml.bind.JAXBException;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import pdus.ListBeginPDU;
@@ -28,9 +29,9 @@ abstract public class StateHandler extends DefaultHandler {
         }
     }
 
-    protected void sendList(LinkedList<String> list) {
+    protected void sendList(LinkedList<String> list, String type) {
         try {
-            list.addFirst(new ListBeginPDU().toXML());
+            list.addFirst(new ListBeginPDU(type).toXML());
             list.addLast(new ListEndPDU().toXML());
         } catch (JAXBException e) {
             // TODO Auto-generated catch block
@@ -52,7 +53,6 @@ abstract public class StateHandler extends DefaultHandler {
         LinkedList<String> messages = new LinkedList<String>();
         try {
             while (rs != null && rs.next()) {
-                // public PostPDU(String text, String author, Integer likes, Date date, Integer id) {
                 PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"),
                         rs.getDate("post_date"), rs.getInt("id"));
                 messages.add(post.toXML());
@@ -64,6 +64,9 @@ abstract public class StateHandler extends DefaultHandler {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        this.sendList(messages);
+        this.sendList(messages, "posts");
     }
+
+    abstract public void startElement(String uri, String localName, String qName, Attributes attributes)
+            throws SAXException;
 }

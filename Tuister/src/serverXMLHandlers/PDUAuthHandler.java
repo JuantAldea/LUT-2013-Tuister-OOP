@@ -9,11 +9,7 @@ import javax.xml.bind.JAXBException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import pdus.PDU;
 import pdus.AckPDU;
-import pdus.ListBeginPDU;
-import pdus.ListEndPDU;
-import pdus.PostPDU;
 import pdus.UserPDU;
 import server.ServerWorker;
 
@@ -78,7 +74,7 @@ public class PDUAuthHandler extends StateHandler {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        this.sendList(messages);
+        this.sendList(messages, "users");
     }
 
     protected void onUserListRequest(Attributes attributes) {
@@ -95,7 +91,7 @@ public class PDUAuthHandler extends StateHandler {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        this.sendList(messages);
+        this.sendList(messages, "users");
 
     }
 
@@ -129,11 +125,5 @@ public class PDUAuthHandler extends StateHandler {
         } else {
             System.out.println("Not valid in currrent state Tag: " + qName);
         }
-    }
-
-    public void endElement(String uri, String localName, String qName) throws SAXException {
-    }
-
-    public void characters(char ch[], int start, int length) throws SAXException {
     }
 }

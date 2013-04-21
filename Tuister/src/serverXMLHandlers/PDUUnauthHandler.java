@@ -62,7 +62,6 @@ public class PDUUnauthHandler extends StateHandler {
                 e.printStackTrace();
             }
         } else {
-            
             try {
                 this.context.send(new ErrorPDU("Username or password invalid").toXML());
             } catch (JAXBException e) {
@@ -85,11 +84,5 @@ public class PDUUnauthHandler extends StateHandler {
         } else {
             System.out.println("Not valid in currrent state Tag: " + qName);
         }
-    }
-
-    public void endElement(String uri, String localName, String qName) throws SAXException {
-    }
-
-    public void characters(char ch[], int start, int length) throws SAXException {
     }
 }

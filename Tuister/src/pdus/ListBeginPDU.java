@@ -8,8 +8,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 @XmlRootElement(name = "list_begin")
 @XmlAccessorType(XmlAccessType.NONE)
 public class ListBeginPDU extends PDU {
+    protected String type;
 
-    public ListBeginPDU() {
+    @SuppressWarnings("unused")
+    private ListBeginPDU() {
+    }
+
+    public ListBeginPDU(String type) {
+        this.type = type;
     }
 
     public String toXML() throws JAXBException {
