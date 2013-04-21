@@ -8,7 +8,6 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
 import org.xml.sax.SAXException;
@@ -96,13 +95,20 @@ public class ClientController implements Runnable {
 	}
 
 	public void exit() {
-		// TODO Exit
-		System.out.println("Exitting.");
+
+		this.gui.exitting();
+		
 		this.gui.deactivate();
 		this.active = false;
+		this.semaphore.release();
 		this.selector.wakeup();
 	}
 
+	
+	/*
+	 * Establishes the connection with the server using a socket,
+	 * if it has not been done before.
+	 */
 	public synchronized void connectToServer() {
 		if (this.socket == null) {
 			try {
@@ -117,6 +123,10 @@ public class ClientController implements Runnable {
 		}
 	}
 	
+	/*
+	 * Closes the connection with the server, if it has been
+	 * established before.
+	 */
 	public synchronized void disconnectFromServer() {
 		if (this.socket != null) {
 			try {
@@ -129,6 +139,9 @@ public class ClientController implements Runnable {
 		}
 	}
 
+	/*
+	 * Sends a message to the server, if the connection has been established.
+	 */
 	public void sendToServer(String string) {
 		ByteBuffer buffer = ByteBuffer.allocate(string.length()).order(
 				ByteOrder.BIG_ENDIAN);
@@ -145,16 +158,13 @@ public class ClientController implements Runnable {
 		}
 	}
 
-	public void wakeUp() { // TODO useless
-		this.selector.wakeup();
-	}
-
 	@Override
 	public void run() {
-		// this.state.login("asdf", "fdsa");
 		ByteBuffer buffer = null;
 
 		while (this.active) {
+			
+			// If the connection is not active, block this thread.
 			if (this.socket == null){
 				try {
 					this.semaphore.acquire();
@@ -162,10 +172,7 @@ public class ClientController implements Runnable {
 					e1.printStackTrace();
 				}
 			}
-			
-			/*synchronized (this.model){
-				//if (this.socket == null) continue;
-			}*/
+
 			while (this.socket != null) {
 				try {
 					buffer = ByteBuffer.allocate(
@@ -178,30 +185,16 @@ public class ClientController implements Runnable {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				Iterator<SelectionKey> it = selector.selectedKeys().iterator();
-
-				while (it.hasNext()) {
-					SelectionKey selKey = it.next();
-					it.remove();
-					if (selKey.isReadable()) {
-						SocketChannel s = (SocketChannel) selKey.channel();
-						int r = 0;
-						try {
-							r = s.read(buffer);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-							
-						try {
-							this.model.processData(r, buffer);
-						} catch (SAXException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
+				
+				int receivedBytes = 0;
+				
+				try {
+					receivedBytes = this.socket.read(buffer);
+					this.model.processData(receivedBytes, buffer);
+				} catch (SAXException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -221,8 +214,6 @@ public class ClientController implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-		System.out.println("End of potato");
 	}
 
 }

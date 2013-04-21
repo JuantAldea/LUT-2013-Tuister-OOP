@@ -25,6 +25,6 @@ public class Post {
     }
 
     public String toString() {
-        return "[Text: " + this.text + " Author: " + this.author + " Likes: " + likes + " Date: " + this.date + " ID: " + this.id + "]";
+        return this.author + " - " + this.date + " - " + this.likes + (this.likes == 1 ? " like" : " likes") + "\n    " + this.text + "\n";
     }
 }
