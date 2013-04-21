@@ -1,15 +1,22 @@
 package server;
 
-import server.State;
-
-public class ServerState extends State {
+/* this class holds the configuration of the server, it was build to orchestrate
+ *  UI's thread and the server's thread, but since we didn't build an UI for the server
+ *  this class is kind of useless. In any case it could be used for extend the app
+ */
+public class ServerState implements Cloneable {
     private static final ServerState instance = new ServerState();
     protected boolean acceptingNewConnections = true;
     protected boolean running = false;
     protected int listeningPort = 27015;
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }
+
     private ServerState() {
-        super();
+
     }
 
     public static synchronized ServerState getInstance() {

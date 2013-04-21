@@ -27,5 +27,4 @@ public class UnlikePDU extends PDU {
     public static UnlikePDU XMLParse(String xml) throws JAXBException {
         return (UnlikePDU) PDU.XMLParse(xml, UnlikePDU.class);
     }
-
 }

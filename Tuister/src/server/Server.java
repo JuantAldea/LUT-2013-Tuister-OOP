@@ -33,11 +33,11 @@ public class Server implements Runnable {
                 server.register(selector, SelectionKey.OP_ACCEPT);
                 // wait for activity
                 selector.select();
+                // on new connection => spawn new thread to handle the new client.
                 new Thread(new ServerWorker(server.accept())).start();
             }
             server.close();
             selector.close();
-
         } catch (IOException e1) {
             e1.printStackTrace();
         }

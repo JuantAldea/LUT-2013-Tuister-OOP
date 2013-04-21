@@ -15,10 +15,43 @@ import pdus.PostPDU;
 import pdus.UserPDU;
 import server.ServerWorker;
 
+/*
+ * SAX handler for the authenticated state
+ */
 public class PDUAuthHandler extends PDUHandler {
 
     public PDUAuthHandler(ServerWorker context) {
         super(context);
+    }
+
+    /*
+     * This function is called by the SAX parser every time it finds a start tag <tag ..> this is the heart the server
+     * since server's behavior is driven by user's input
+     */
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        if (qName.equalsIgnoreCase("publish")) {
+            this.onPublish(attributes);
+        } else if (qName.equalsIgnoreCase("logout")) {
+            this.onLogout(attributes);
+        } else if (qName.equalsIgnoreCase("like")) {
+            this.onLike(attributes);
+        } else if (qName.equalsIgnoreCase("unlike")) {
+            this.onUnlike(attributes);
+        } else if (qName.equalsIgnoreCase("follow")) {
+            this.onFollow(attributes);
+        } else if (qName.equalsIgnoreCase("unfollow")) {
+            this.onUnFollow(attributes);
+        } else if (qName.equalsIgnoreCase("update")) {
+            this.onUpdate();
+        } else if (qName.equalsIgnoreCase("following_users_request")) {
+            this.onFollowingUsersRequest(attributes);
+        } else if (qName.equalsIgnoreCase("user_list_request")) {
+            this.onUserListRequest(attributes);
+        } else if (qName.equalsIgnoreCase("user_content_request")) {
+            this.onUserContentRequest(attributes);
+        } else {
+            System.out.println("Tag not valid in currrent state: " + qName);
+        }
     }
 
     protected void onPublish(Attributes attributes) {
@@ -108,10 +141,8 @@ public class PDUAuthHandler extends PDUHandler {
                 messages.add(new UserPDU(rs.getString("username")).toXML());
             }
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         this.sendList(messages, "users");
@@ -125,10 +156,8 @@ public class PDUAuthHandler extends PDUHandler {
                 messages.add(new UserPDU(rs.getString("username")).toXML());
             }
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         this.sendList(messages, "users");
@@ -144,38 +173,10 @@ public class PDUAuthHandler extends PDUHandler {
                 messages.add(post.toXML());
             }
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         this.sendList(messages, "posts");
-    }
-
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        if (qName.equalsIgnoreCase("publish")) {
-            this.onPublish(attributes);
-        } else if (qName.equalsIgnoreCase("logout")) {
-            this.onLogout(attributes);
-        } else if (qName.equalsIgnoreCase("like")) {
-            this.onLike(attributes);
-        } else if (qName.equalsIgnoreCase("unlike")) {
-            this.onUnlike(attributes);
-        } else if (qName.equalsIgnoreCase("follow")) {
-            this.onFollow(attributes);
-        } else if (qName.equalsIgnoreCase("unfollow")) {
-            this.onUnFollow(attributes);
-        } else if (qName.equalsIgnoreCase("update")) {
-            this.onUpdate();
-        } else if (qName.equalsIgnoreCase("following_users_request")) {
-            this.onFollowingUsersRequest(attributes);
-        } else if (qName.equalsIgnoreCase("user_list_request")) {
-            this.onUserListRequest(attributes);
-        } else if (qName.equalsIgnoreCase("user_content_request")) {
-            this.onUserContentRequest(attributes);
-        } else {
-            System.out.println("Tag not valid in currrent state: " + qName);
-        }
     }
 }

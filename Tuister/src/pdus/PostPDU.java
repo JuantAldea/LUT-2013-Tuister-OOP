@@ -40,5 +40,4 @@ public class PostPDU extends PDU {
     public static PostPDU XMLParse(String xml) throws JAXBException {
         return (PostPDU) PDU.XMLParse(xml, PostPDU.class);
     }
-
 }

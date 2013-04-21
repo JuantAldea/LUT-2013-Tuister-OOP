@@ -27,5 +27,4 @@ public class FollowPDU extends PDU {
     public static FollowPDU XMLParse(String xml) throws JAXBException {
         return (FollowPDU) PDU.XMLParse(xml, FollowPDU.class);
     }
-
 }

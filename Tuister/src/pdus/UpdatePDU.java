@@ -19,5 +19,4 @@ public class UpdatePDU extends PDU {
     public static UpdatePDU XMLParse(String xml) throws JAXBException {
         return (UpdatePDU) PDU.XMLParse(xml, UpdatePDU.class);
     }
-
 }

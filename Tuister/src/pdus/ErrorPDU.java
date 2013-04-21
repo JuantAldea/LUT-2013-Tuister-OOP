@@ -28,5 +28,4 @@ public class ErrorPDU extends PDU {
     public static ErrorPDU XMLParse(String xml) throws JAXBException {
         return (ErrorPDU) PDU.XMLParse(xml, ErrorPDU.class);
     }
-
 }

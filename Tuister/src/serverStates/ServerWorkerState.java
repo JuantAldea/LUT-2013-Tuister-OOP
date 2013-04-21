@@ -11,6 +11,13 @@ import org.xml.sax.SAXException;
 import server.ServerWorker;
 import serverXMLHandlers.PDUHandler;
 
+/*
+ * Since the communication is encoded as XML, we are using
+ * a SAX XML parser to react to client's requests, this
+ * is the base class for the SAX handler used on each
+ * server state
+ */
+
 abstract public class ServerWorkerState {
     protected ServerWorker context;
     protected SAXParser saxParser = null;
@@ -24,15 +31,14 @@ abstract public class ServerWorkerState {
         this.context = context;
         try {
             saxParser = SAXParserFactory.newInstance().newSAXParser();
-        } catch (ParserConfigurationException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
-        } catch (SAXException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
         }
     }
 
+    // Parse the input with the handler
     public void process(InputStream input) {
         if (this.handler != null) {
             try {
@@ -44,6 +50,4 @@ abstract public class ServerWorkerState {
             }
         }
     }
-
-    abstract public String toString();
 }

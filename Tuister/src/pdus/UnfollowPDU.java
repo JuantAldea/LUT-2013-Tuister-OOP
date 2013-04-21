@@ -28,5 +28,4 @@ public class UnfollowPDU extends PDU {
     public static UnfollowPDU XMLParse(String xml) throws JAXBException {
         return (UnfollowPDU) XMLParse(xml, UnfollowPDU.class);
     }
-
 }

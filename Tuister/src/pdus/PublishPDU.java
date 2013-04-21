@@ -28,5 +28,4 @@ public class PublishPDU extends PDU {
     public static PublishPDU XMLParse(String xml) throws JAXBException {
         return (PublishPDU) PDU.XMLParse(xml, PublishPDU.class);
     }
-
 }

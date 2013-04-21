@@ -13,6 +13,13 @@ import serverStates.ServerWorkerState;
 import serverStates.ServerWorkerStateAuthenticated;
 import serverStates.ServerWorkerStateUnauthenticated;
 
+/* 
+ * This class is the controller of the connections
+ * it uses the state pattern to set the behavior 
+ * of the controller, this is, the commands that
+ * are accepted
+ */
+
 public class ServerWorker implements Runnable {
     protected Integer userID;
     protected SocketChannel socket;
@@ -69,7 +76,6 @@ public class ServerWorker implements Runnable {
         try {
             this.socket.write(buf);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -83,7 +89,6 @@ public class ServerWorker implements Runnable {
             while (running) {
                 socket.register(selector, SelectionKey.OP_READ);
                 // wait for activity
-
                 selector.select();
                 if (socket.isConnected()) {
                     int received_bytes = socket.read(buf);
@@ -103,17 +108,14 @@ public class ServerWorker implements Runnable {
                     break;
                 }
             }
-        } catch (IOException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         try {
             socket.close();
             selector.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-
 }
