@@ -14,6 +14,10 @@ import pdus.ListEndPDU;
 import pdus.PostPDU;
 import server.ServerWorker;
 
+/*
+ * Superclass of SAX parser handlers used in the application. It encapsulates the functionality that is common to both states
+ */
+
 abstract public class PDUHandler extends DefaultHandler {
     protected ServerWorker context = null;
 
@@ -21,6 +25,8 @@ abstract public class PDUHandler extends DefaultHandler {
     private PDUHandler() {
 
     }
+
+    abstract public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException;
 
     protected void printAttributes(Attributes attributes) {
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -33,13 +39,11 @@ abstract public class PDUHandler extends DefaultHandler {
             list.addFirst(new ListBeginPDU(type).toXML());
             list.addLast(new ListEndPDU().toXML());
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         for (String msg : list) {
             this.context.send(msg);
         }
-
     }
 
     public PDUHandler(ServerWorker context) {
@@ -48,23 +52,19 @@ abstract public class PDUHandler extends DefaultHandler {
     }
 
     protected void onUserContentRequest(Attributes attributes) {
-        ResultSet rs = this.context.getDatabase().userContentRequest(attributes.getValue("username"));
+        ResultSet queryResults = this.context.getDatabase().userContentRequest(attributes.getValue("username"));
         LinkedList<String> messages = new LinkedList<String>();
         try {
-            while (rs != null && rs.next()) {
-                PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"), rs.getString("post_date"),
-                        rs.getInt("id"));
+            while (queryResults != null && queryResults.next()) {
+                PostPDU post = new PostPDU(queryResults.getString("body"), attributes.getValue("username"), queryResults.getInt("likes"),
+                        queryResults.getString("post_date"), queryResults.getInt("id"));
                 messages.add(post.toXML());
             }
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         this.sendList(messages, "posts");
     }
-
-    abstract public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException;
 }

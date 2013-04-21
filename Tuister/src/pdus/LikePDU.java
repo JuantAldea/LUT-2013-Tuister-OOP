@@ -27,5 +27,4 @@ public class LikePDU extends PDU {
     public static LikePDU XMLParse(String xml) throws JAXBException {
         return (LikePDU) PDU.XMLParse(xml, LikePDU.class);
     }
-
 }

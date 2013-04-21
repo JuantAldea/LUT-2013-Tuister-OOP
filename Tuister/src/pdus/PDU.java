@@ -8,15 +8,17 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-abstract public class PDU {
+/*
+ * Base class of all the PDUs (Protocol Data Units), it uses JAXB for marshalling and unmarshalling Java objects as XML
+ * This approach helps easily extend the number of PDUs and the contents of them since the only change needed is adding
+ * new fields to the object with the proper JAXB decorator.
+ */
 
+abstract public class PDU {
     protected String toXML(@SuppressWarnings("rawtypes") Class classObject) throws JAXBException {
         JAXBContext jaxbcontext = JAXBContext.newInstance(classObject);
         Marshaller marshaller = jaxbcontext.createMarshaller();
         StringWriter stringwriter = new StringWriter();
-
-        // marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-        // Boolean.TRUE);
         marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
         marshaller.marshal(this, stringwriter);
         String xml = stringwriter.toString();
@@ -30,5 +32,4 @@ abstract public class PDU {
         Unmarshaller unmarshaller = jaxbcontext.createUnmarshaller();
         return (PDU) unmarshaller.unmarshal(stringreader);
     }
-
 }

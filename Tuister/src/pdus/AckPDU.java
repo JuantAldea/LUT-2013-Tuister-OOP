@@ -9,15 +9,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 @XmlRootElement(name = "ack")
 @XmlAccessorType(XmlAccessType.NONE)
 public class AckPDU extends PDU {
-	
-	@XmlAttribute(name = "type")
+
+    @XmlAttribute(name = "type")
     protected String type;
 
-	@SuppressWarnings("unused")
+    @SuppressWarnings("unused")
     private AckPDU() {
     }
-	
-	public AckPDU(String type) {
+
+    public AckPDU(String type) {
         this.type = type;
     }
 
@@ -28,5 +28,4 @@ public class AckPDU extends PDU {
     public static AckPDU XMLParse(String xml) throws JAXBException {
         return (AckPDU) PDU.XMLParse(xml, AckPDU.class);
     }
-
 }

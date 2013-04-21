@@ -31,5 +31,4 @@ public class LoginPDU extends PDU {
     public static LoginPDU XMLParse(String xml) throws JAXBException {
         return (LoginPDU) PDU.XMLParse(xml, LoginPDU.class);
     }
-
 }

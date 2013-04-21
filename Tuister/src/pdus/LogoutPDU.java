@@ -19,5 +19,4 @@ public class LogoutPDU extends PDU {
     public static LogoutPDU XMLParse(String xml) throws JAXBException {
         return (LogoutPDU) PDU.XMLParse(xml, LogoutPDU.class);
     }
-
 }

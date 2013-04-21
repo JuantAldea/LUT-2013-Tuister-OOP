@@ -32,5 +32,4 @@ public class RegisterPDU extends PDU {
     public static RegisterPDU XMLParse(String xml) throws JAXBException {
         return (RegisterPDU) PDU.XMLParse(xml, RegisterPDU.class);
     }
-
 }
