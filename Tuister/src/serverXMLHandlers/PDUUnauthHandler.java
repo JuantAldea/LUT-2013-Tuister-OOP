@@ -57,16 +57,13 @@ public class PDUUnauthHandler extends PDUHandler {
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         if (qName.equalsIgnoreCase("register")) {
-            System.out.println("Tag: " + qName);
             this.onRegister(attributes);
         } else if (qName.equalsIgnoreCase("login")) {
-            System.out.println("Tag: " + qName);
             this.onLogin(attributes);
         } else if (qName.equalsIgnoreCase("user_content_request")) {
-            System.out.println("Tag: " + qName);
             this.onUserContentRequest(attributes);
         } else {
-            System.out.println("Not valid in currrent state Tag: " + qName);
+            System.out.println("Tag not valid in currrent state: " + qName);
         }
     }
 }

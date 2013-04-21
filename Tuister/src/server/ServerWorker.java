@@ -81,8 +81,6 @@ public class ServerWorker implements Runnable {
             ByteBuffer buf = ByteBuffer.allocate(socket.socket().getReceiveBufferSize()).order(ByteOrder.BIG_ENDIAN);
             this.socket.configureBlocking(false);
             while (running) {
-                System.out.println(this.state.toString());
-                System.out.println(this.running);
                 socket.register(selector, SelectionKey.OP_READ);
                 // wait for activity
 
@@ -99,7 +97,6 @@ public class ServerWorker implements Runnable {
                     buf.get(byteArray, 0, received_bytes);
                     buf.clear();
                     String pdu = new String(byteArray);
-                    System.out.println(pdu);
                     this.state.process(new ByteArrayInputStream(byteArray));
                 } else {
                     // socket not connected, finish everything

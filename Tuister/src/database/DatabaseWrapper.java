@@ -28,7 +28,6 @@ public class DatabaseWrapper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Connection: " + connection);
     }
 
     protected void initDatabase() {

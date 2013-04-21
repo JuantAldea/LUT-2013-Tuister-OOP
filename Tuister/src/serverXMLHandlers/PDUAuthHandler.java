@@ -157,31 +157,22 @@ public class PDUAuthHandler extends PDUHandler {
         if (qName.equalsIgnoreCase("publish")) {
             this.onPublish(attributes);
         } else if (qName.equalsIgnoreCase("logout")) {
-            System.out.println("Tag: " + qName);
             this.onLogout(attributes);
         } else if (qName.equalsIgnoreCase("like")) {
-            System.out.println("Tag: " + qName);
             this.onLike(attributes);
         } else if (qName.equalsIgnoreCase("unlike")) {
-            System.out.println("Tag: " + qName);
             this.onUnlike(attributes);
         } else if (qName.equalsIgnoreCase("follow")) {
-            System.out.println("Tag: " + qName);
             this.onFollow(attributes);
         } else if (qName.equalsIgnoreCase("unfollow")) {
-            System.out.println("Tag: " + qName);
             this.onUnFollow(attributes);
         } else if (qName.equalsIgnoreCase("update")) {
-            System.out.println("Tag: " + qName);
             this.onUpdate();
         } else if (qName.equalsIgnoreCase("following_users_request")) {
-            System.out.println("Tag: " + qName);
             this.onFollowingUsersRequest(attributes);
         } else if (qName.equalsIgnoreCase("user_list_request")) {
-            System.out.println("Tag: " + qName);
             this.onUserListRequest(attributes);
         } else if (qName.equalsIgnoreCase("user_content_request")) {
-            System.out.println("Tag: " + qName);
             this.onUserContentRequest(attributes);
         } else {
             System.out.println("Tag not valid in currrent state: " + qName);
