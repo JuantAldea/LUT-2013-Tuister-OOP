@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 import pdus.AckPDU;
 import pdus.UserPDU;
 import server.ServerWorker;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class PDUAuthHandler extends StateHandler {
 
@@ -95,6 +96,15 @@ public class PDUAuthHandler extends StateHandler {
 
     }
 
+    protected void onUpdate() {
+        // TODO NOT IMPLEMENTED
+        try {
+            throw new NotImplementedException();
+        } catch (NotImplementedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         if (qName.equalsIgnoreCase("publish")) {
             this.onPublish(attributes);
@@ -113,6 +123,9 @@ public class PDUAuthHandler extends StateHandler {
         } else if (qName.equalsIgnoreCase("unfollow")) {
             System.out.println("Tag: " + qName);
             this.onUnFollow(attributes);
+        } else if (qName.equalsIgnoreCase("update")) {
+            System.out.println("Tag: " + qName);
+            this.onUpdate();
         } else if (qName.equalsIgnoreCase("following_users_request")) {
             System.out.println("Tag: " + qName);
             this.onFollowingUsersRequest(attributes);
@@ -123,7 +136,7 @@ public class PDUAuthHandler extends StateHandler {
             System.out.println("Tag: " + qName);
             this.onUserContentRequest(attributes);
         } else {
-            System.out.println("Not valid in currrent state Tag: " + qName);
+            System.out.println("Tag not valid in currrent state: " + qName);
         }
     }
 }

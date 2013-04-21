@@ -29,7 +29,6 @@ public class ClientHandler extends DefaultHandler {
         } else if (qName.equalsIgnoreCase("list_end")) {
             System.out.println("Tag: " + qName);
             System.out.println("HOYGA HAMIJO CE HACAVO LO QE CE DAVA");
-            
         } else if (qName.equalsIgnoreCase("user")) {
             User user = new User(attributes.getValue("username"));
             System.out.println(user);
