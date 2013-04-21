@@ -78,7 +78,6 @@ public class ClientModel {
 	public void processData(int received_bytes, ByteBuffer buffer) throws SAXException, IOException {
 		if (received_bytes <= 0){
 			this.controller.disconnectFromServer();
-			this.controller.gui.disconneceted();
 		} else {
 			buffer.flip();
 			byte[] byteArray = new byte[received_bytes];

@@ -215,7 +215,7 @@ public class GUI implements Runnable {
 	}
 
 
-	public void disconneceted() {
+	public void disconnected() {
 		System.out.println("You are disconnected.");
 	}
 

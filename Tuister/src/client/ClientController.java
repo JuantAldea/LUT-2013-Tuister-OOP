@@ -17,8 +17,8 @@ import clientStates.ClientStateHandler;
 public class ClientController implements Runnable {
 	public Semaphore semaphore = new Semaphore(0);
 
-	private String host = "192.168.1.101";
-	private int port = 27015;
+	private String host = null;
+	private Integer port = 0;
 
 	private SocketChannel socket = null;
 	private Selector selector = null;
@@ -29,10 +29,13 @@ public class ClientController implements Runnable {
 
 	private boolean active = true;
 
-	public ClientController() {
+	public ClientController(String host, Integer port) {
 		this.gui = new GUI(this);
 		this.model = new ClientModel(this);
 		this.state = new ClientStateHandler(this);
+		
+		this.host = host;
+		this.port = port;
 
 		try {
 			this.selector = Selector.open();
@@ -132,6 +135,7 @@ public class ClientController implements Runnable {
 			try {
 				this.socket.close();
 				this.state.disconnectedFromServer();
+				this.gui.disconnected();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -199,21 +203,4 @@ public class ClientController implements Runnable {
 			}
 		}
 	}
-
-	public static void main(String[] args) {
-		ClientController controller = new ClientController();
-		Thread controllerThread = new Thread(controller);
-		Thread guiThread = new Thread(controller.gui);
-
-		controllerThread.start();
-		guiThread.start();
-
-		try {
-			guiThread.join();
-			controllerThread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
 }
