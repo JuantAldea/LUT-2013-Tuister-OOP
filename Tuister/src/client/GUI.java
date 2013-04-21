@@ -17,7 +17,7 @@ public class GUI implements Runnable {
 		this.controller = controller;
 		this.stdIn = new BufferedReader(new InputStreamReader(System.in));
 		
-		System.out.println("Welcome blablabla");
+		System.out.println("Welcome to the Tuister client. Enter \"help\" for detailed instructions of available commands\n");
 	}
 
 
@@ -47,6 +47,20 @@ public class GUI implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	
+	public void printHelp() {
+		
+		String help = "Available commands:\n" +
+					  "    register <username> <password> -> Adds a new user in the system.\n" +
+					  "    login <username> <password> -> Access with an existing username and password." +
+					  "    logout -> Close the session." +
+					  "    update -> Gets the last posts of the people " +
+					  "    usercontent <username> -> Get the content shared by the specified user. Can be done when not logged in." +
+					  "    ";
+		
+		System.out.println(help);
 	}
 	
 
@@ -134,15 +148,6 @@ public class GUI implements Runnable {
 		} else {
 			this.printHelp();
 		}
-	}
-	
-	public void printHelp() {
-		System.out.println("lolz immahelp"); // TODO
-		
-		String help = "register <username> <password> -> Adds a new user in the system.\n" +
-					  "login <username> <password> -> Access with an existing username and password.";
-		
-		System.out.println(help);
 	}
 	
 	// http://stackoverflow.com/questions/794248/a-method-to-reverse-effect-of-java-string-split
