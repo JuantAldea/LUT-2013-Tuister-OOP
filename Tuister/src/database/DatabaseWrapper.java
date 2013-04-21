@@ -22,7 +22,19 @@ public class DatabaseWrapper {
             e.printStackTrace();
         }
         try {
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
             connection = DriverManager.getConnection("jdbc:sqlite:tuister.db");
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
+            // TODO INICIALIZAR LA BASE DE DATOS PARA EL RUSO HIJO DE PUTA
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
