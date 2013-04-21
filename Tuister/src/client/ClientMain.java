@@ -14,6 +14,6 @@ public class ClientMain {
 			controllerThread.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
-	}
+        }
+    }
 }

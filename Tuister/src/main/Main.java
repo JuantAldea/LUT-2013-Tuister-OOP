@@ -2,6 +2,8 @@ package main;
 
 import java.util.regex.Pattern;
 
+import client.ClientMain;
+
 import server.ServerMain;
 
 public class Main {
@@ -51,9 +53,9 @@ public class Main {
 
             Integer port = Main.validPort(args[2]);
             if (port != -1) {
+                ClientMain.main(args[1], port);
             } else {
                 System.out.println("Invalid port");
-                return;
             }
         } else {
             Main.help();
