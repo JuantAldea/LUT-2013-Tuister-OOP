@@ -3,7 +3,6 @@ package client;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,6 +36,7 @@ public class ClientModel {
 	 */
 	private int listStatus = 0;
 	private LinkedList<Post> postList = null;
+	private LinkedList<User> userList = null;
 	
 	public ClientModel(ClientController controller) {
         this.controller = controller;
@@ -102,7 +102,7 @@ public class ClientModel {
 		            
 		            // If an error is received
 		            if (name.equalsIgnoreCase("error")){
-		            	this.controller.gui.errorReceived(this.handler.getAttributes().getValue("reason"));
+		            	this.controller.errorReceived(this.handler.getAttributes().getValue("reason"));
 		            }
 		            
 		            // If the model is waiting for an ack, and it is received
@@ -142,21 +142,13 @@ public class ClientModel {
 		            	else if (this.listStatus == 1
 		            			&& name.equalsIgnoreCase("list_end")){
 		            		
-		            		Iterator<Post> it = this.postList.iterator();
-		            		int localId = postList.size() + 1;
-		            		
-		            		while (it.hasNext()){
-		            			localId -= 1;
-		            			Post p = it.next();
-		            			this.controller.gui.printPost(localId, p);
-		            		}
-		            		
+		            		this.controller.postListReady(postList);
 		            		this.listStatus = 0;
 		            		this.status = 0;
 		            	}
 		            	
 		            	else {
-		            		this.controller.gui.unexpectedContentError();
+		            		this.controller.unexpectedContentError();
 		            	}
 		            }
 		            
@@ -169,6 +161,7 @@ public class ClientModel {
 		            			&& this.handler.getAttributes().getValue("type").equalsIgnoreCase("users")){
 		            		
 		            		// Starts the reception of posts
+		            		this.userList = new LinkedList<User>();
 		            		this.listStatus = 1;
 		            	}
 		            	
@@ -177,7 +170,7 @@ public class ClientModel {
 		            			&& name.equalsIgnoreCase("user")){
 
 		            		User u = new User(this.handler.getAttributes().getValue("username"));
-		            		this.controller.gui.printUser(u);
+		            		this.userList.add(u);
 		            		
 		            	}
 		            	
@@ -185,17 +178,18 @@ public class ClientModel {
 		            	else if (this.listStatus == 1
 		            			&& name.equalsIgnoreCase("list_end")){
 		            		
+		            		this.controller.userListReady(userList);
 		            		this.listStatus = 0;
 		            		this.status = 0;
 		            	}
 		            	
 		            	else {
-		            		this.controller.gui.unexpectedContentError();
+		            		this.controller.unexpectedContentError();
 		            	}
 		            }
 		            
 		            else {
-		            	this.controller.gui.unexpectedContentError();
+		            	this.controller.unexpectedContentError();
 		            }
 		        }
 			}

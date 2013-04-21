@@ -8,9 +8,14 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.concurrent.Semaphore;
 
 import org.xml.sax.SAXException;
+
+import common.Post;
+import common.User;
 
 import clientStates.ClientStateHandler;
 
@@ -201,6 +206,34 @@ public class ClientController implements Runnable {
 					e.printStackTrace();
 				}
 			}
+		}
+	}
+
+	public void errorReceived(String value) {
+		this.gui.errorReceived(value);
+	}
+
+	public void unexpectedContentError() {
+		this.gui.unexpectedContentError();
+	}
+
+	public void postListReady(LinkedList<Post> postList) {
+		Iterator<Post> it = postList.iterator();
+		int localId = postList.size() + 1;
+		
+		while (it.hasNext()){
+			localId -= 1;
+			Post p = it.next();
+			this.gui.showPost(localId, p);
+		}
+	}
+
+	public void userListReady(LinkedList<User> userList) {
+		Iterator<User> it = userList.iterator();
+		
+		while (it.hasNext()){
+			User u = it.next();
+			this.gui.showUser(u);
 		}
 	}
 }

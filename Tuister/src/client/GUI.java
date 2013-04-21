@@ -225,7 +225,7 @@ public class GUI implements Runnable {
 	}
 
 
-	public void printPost(int localId, Post p) {
+	public void showPost(int localId, Post p) {
 		System.out.println("[" + localId + "] " + p);
 	}
 
@@ -235,7 +235,7 @@ public class GUI implements Runnable {
 	}
 
 
-	public void printUser(User u) {
+	public void showUser(User u) {
 		System.out.println("- " + u);
 	}
 
