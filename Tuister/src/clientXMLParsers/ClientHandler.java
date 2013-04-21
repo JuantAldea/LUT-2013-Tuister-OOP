@@ -16,6 +16,7 @@ public class ClientHandler extends DefaultHandler {
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         if (qName.equalsIgnoreCase("ack")) {
+            System.out.println("Tag: " + qName);
         } else if (qName.equalsIgnoreCase("error")) {
             System.out.println("Tag: " + qName);
         } else if (qName.equalsIgnoreCase("list")) {
