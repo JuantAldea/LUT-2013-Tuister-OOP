@@ -39,7 +39,8 @@ public class ClientNotLoggedIn extends State {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
-
+		
+		this.controller.model.waitForACK();
 		return this;
 	}
 	
@@ -54,10 +55,16 @@ public class ClientNotLoggedIn extends State {
 			e.printStackTrace();
 		}
 		
+		this.controller.model.waitForACK();
 		return this;
 	}
 	
 	public State logout() {
+		this.controller.gui.errorNotLoggedIn();
+		return this;
+	}
+	
+	public State update() {
 		this.controller.gui.errorNotLoggedIn();
 		return this;
 	}
@@ -98,6 +105,8 @@ public class ClientNotLoggedIn extends State {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		this.controller.model.waitForListOfPosts();
 		return this;
 	}
 	

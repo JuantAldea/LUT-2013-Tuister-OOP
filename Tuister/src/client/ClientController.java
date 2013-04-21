@@ -52,6 +52,10 @@ public class ClientController implements Runnable {
 	public void logout() {
 		this.state.logout();
 	}
+	
+	public void update() {
+		this.state.update();
+	}
 
 	public void publish(String text) {
 		this.state.publish(text);
@@ -105,6 +109,17 @@ public class ClientController implements Runnable {
 			}
 		}
 		this.semaphore.release();
+	}
+	
+	public synchronized void disconnectFromServer() {
+		if (this.socket != null) {
+			try {
+				this.socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			this.socket = null;
+		}
 	}
 
 	public void sendToServer(String string) {
@@ -170,12 +185,8 @@ public class ClientController implements Runnable {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-
-						if (r <= 0) {
-							this.exit();
-						} else {
-							this.model.processData(buffer);
-						}
+							
+						this.model.processData(r, buffer);
 					}
 				}
 			}
