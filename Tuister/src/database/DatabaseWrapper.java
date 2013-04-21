@@ -19,7 +19,6 @@ public class DatabaseWrapper {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         try {
@@ -231,7 +230,6 @@ public class DatabaseWrapper {
             return statement.executeQuery(String.format("select users.username from users, followers where " + "users.id=followers.followed "
                     + "and " + "followers.follower=%d", userID));
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -243,7 +241,6 @@ public class DatabaseWrapper {
             statement.setQueryTimeout(30);
             return statement.executeQuery(String.format("select username from users"));
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -281,11 +278,9 @@ public class DatabaseWrapper {
             queryResults = statement
                     .executeQuery(String
                             .format("select posts.body, posts.likes, users.username, posts.post_date, posts.id "
-                                    + "from posts, followers, users where (users.id = posts.author and posts.author = followers.followed and followers.follower = %d) " +
-                                    "order by posts.post_date asc",
-                                    userID, userID));
+                                    + "from posts, followers, users where (users.id = posts.author and posts.author = followers.followed and followers.follower = %d) "
+                                    + "order by posts.post_date asc", userID, userID));
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
         }
