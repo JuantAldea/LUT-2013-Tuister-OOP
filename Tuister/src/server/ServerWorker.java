@@ -96,7 +96,6 @@ public class ServerWorker implements Runnable {
                     byte[] byteArray = new byte[received_bytes];
                     buf.get(byteArray, 0, received_bytes);
                     buf.clear();
-                    String pdu = new String(byteArray);
                     this.state.process(new ByteArrayInputStream(byteArray));
                 } else {
                     // socket not connected, finish everything
