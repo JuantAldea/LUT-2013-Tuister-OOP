@@ -17,8 +17,12 @@ public class Post {
         this.text = text;
         this.author = author;
         this.likes = likes;
-        this.date = new Date();
+        this.date = (Date) date.clone();
         this.id = id;
+    }
+    
+    public Integer getId(){
+    	return this.id;
     }
 
     public String toString() {

@@ -8,6 +8,7 @@ import pdus.LikePDU;
 import pdus.LogoutPDU;
 import pdus.PublishPDU;
 import pdus.UnfollowPDU;
+import pdus.UnlikePDU;
 import pdus.UpdatePDU;
 import pdus.UserContentRequestPDU;
 import pdus.UserListRequestPDU;
@@ -58,6 +59,8 @@ public class ClientLoggedIn extends State {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		this.controller.model.waitForListOfPosts();
 		return this;
 	}
 	
@@ -67,6 +70,8 @@ public class ClientLoggedIn extends State {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		this.controller.model.waitForACK();
 		return this;
 	}
 	
@@ -76,6 +81,8 @@ public class ClientLoggedIn extends State {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		this.controller.model.waitForACK();
 		return this;
 	}
 
@@ -85,26 +92,40 @@ public class ClientLoggedIn extends State {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		this.controller.model.waitForACK();
 		return this;
 	}
 
 	public State like(String string) {
 		try {
 			Integer id = this.controller.model.postID(string);
-			this.controller.sendToServer(new LikePDU(id).toXML());
+			if (id < 0){
+				this.controller.gui.errorNoPostList();
+			} else {
+				this.controller.sendToServer(new LikePDU(id).toXML());
+			}
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		this.controller.model.waitForACK();
 		return this;
 	}
 
 	public State unlike(String string) {
 		try {
 			Integer id = this.controller.model.postID(string);
-			this.controller.sendToServer(new LikePDU(id).toXML());
+			if (id < 0){
+				this.controller.gui.errorNoPostList();
+			} else {
+				this.controller.sendToServer(new UnlikePDU(id).toXML());
+			}
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		this.controller.model.waitForACK();
 		return this;
 	}
 
@@ -114,6 +135,8 @@ public class ClientLoggedIn extends State {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		this.controller.model.waitForListOfUsers();
 		return this;
 	}
 
@@ -134,6 +157,8 @@ public class ClientLoggedIn extends State {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		this.controller.model.waitForListOfUsers();
 		return this;
 	}
 }

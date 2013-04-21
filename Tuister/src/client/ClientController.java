@@ -11,7 +11,9 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
-import clientStates.ClientState;
+import org.xml.sax.SAXException;
+
+import clientStates.ClientStateHandler;
 
 public class ClientController implements Runnable {
 	public Semaphore semaphore = new Semaphore(0);
@@ -19,19 +21,19 @@ public class ClientController implements Runnable {
 	private String host = "127.0.0.1";
 	private int port = 27015;
 
-	public SocketChannel socket = null;
+	private SocketChannel socket = null;
 	private Selector selector = null;
 
 	public GUI gui = null;
 	public ClientModel model = null;
-	private ClientState state = null;
+	private ClientStateHandler state = null;
 
 	private boolean active = true;
 
 	public ClientController() {
 		this.gui = new GUI(this);
 		this.model = new ClientModel(this);
-		this.state = new ClientState(this);
+		this.state = new ClientStateHandler(this);
 
 		try {
 			this.selector = Selector.open();
@@ -47,6 +49,10 @@ public class ClientController implements Runnable {
 
 	public void login(String username, String password) {
 		this.state.login(username, password);
+	}
+	
+	public void ack(String type) {
+		this.state.ack(type);
 	}
 
 	public void logout() {
@@ -103,12 +109,12 @@ public class ClientController implements Runnable {
 				this.socket = SocketChannel.open(new InetSocketAddress(host,
 						port));
 				this.socket.configureBlocking(false);
+				this.semaphore.release();
 			} catch (IOException e) {
 				this.gui.errorOpeningSocket();
 				this.exit();
 			}
 		}
-		this.semaphore.release();
 	}
 	
 	public synchronized void disconnectFromServer() {
@@ -160,7 +166,6 @@ public class ClientController implements Runnable {
 				//if (this.socket == null) continue;
 			}*/
 			while (this.socket != null) {
-				System.out.println("asdf2");
 				try {
 					buffer = ByteBuffer.allocate(
 							this.socket.socket().getReceiveBufferSize()).order(
@@ -186,7 +191,15 @@ public class ClientController implements Runnable {
 							e.printStackTrace();
 						}
 							
-						this.model.processData(r, buffer);
+						try {
+							this.model.processData(r, buffer);
+						} catch (SAXException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}

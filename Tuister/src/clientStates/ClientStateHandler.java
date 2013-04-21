@@ -2,13 +2,13 @@ package clientStates;
 
 import client.ClientController;
 
-public class ClientState {
+public class ClientStateHandler {
 	private ClientController controller = null;
 	private State currentState = null;
 	
-	public ClientState(){}
+	public ClientStateHandler(){}
 	
-	public ClientState(ClientController controller){
+	public ClientStateHandler(ClientController controller){
 		this.controller = controller;
 		
 		this.currentState = new ClientNotLoggedIn(this.controller);
