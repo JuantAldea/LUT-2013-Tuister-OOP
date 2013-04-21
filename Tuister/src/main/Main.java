@@ -17,8 +17,10 @@ public class Main {
 
     private static void help() {
         System.out.println("Usage:");
-        System.out.println("Server mode params: 0 port");
-        System.out.println("Client mode params: 1 IP port");
+        System.out.println("Server mode params: 0 [<port>]");
+        System.out.println("Client mode params: 1 [<IP> <port>]");
+        System.out.println("Note: if no arguments beside the mode are specified, the default values are:");
+        System.out.println("Host: 127.0.0.1 (localhost)    Port: 27015");
     }
 
     private static Integer validPort(String port) {
@@ -36,28 +38,39 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        if (args.length >= 2 && args[0].equalsIgnoreCase("0")) {
-            // server mode
-            Integer port = Main.validPort(args[1]);
+        if (args.length >= 1 && args[0].equalsIgnoreCase("0")) {
+        	
+        	Integer port = 27015; // Default port
+        	if (args.length >= 2) {
+                // server mode
+                port = Main.validPort(args[1]);
+        	}
 
             if (port != -1) {
                 ServerMain.main(port);
             } else {
                 System.out.println("Invalid port");
             }
-        } else if (args.length >= 3 && args[0].equalsIgnoreCase("1")) {
-            // client mode
-            if (!isValidIPv4(args[1])) {
-                System.out.println("Invalid IP");
-                return;
-            }
-
-            Integer port = Main.validPort(args[2]);
-            if (port != -1) {
-                ClientMain.main(args[1], port);
-            } else {
-                System.out.println("Invalid port");
-            }
+        } else if (args.length >= 1 && args[0].equalsIgnoreCase("1")) {
+        	
+        	String host = "127.0.0.1"; // Default localhost
+        	Integer port = 27015; // Default port
+        	if (args.length >= 3) {
+        		host = args[1];
+        		if (!isValidIPv4(host)) {
+                    System.out.println("Invalid IP");
+                    return;
+                }
+        		
+        		port = Main.validPort(args[2]);
+        		if (port == -1) {
+        			System.out.println("Invalid port");
+        			return;
+        		}
+        	}
+        	
+        	ClientMain.main(host, port);
+            
         } else {
             Main.help();
         }

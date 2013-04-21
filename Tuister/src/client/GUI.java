@@ -186,17 +186,17 @@ public class GUI implements Runnable {
 
 
 	public void errorNotLoggedIn() {
-		System.out.println("You are not logged in.");
+		System.out.println("You are not logged in.\n");
 	}
 
 
 	public void errorOpeningSocket() {
-		System.out.println("The connection could not be established.");
+		System.out.println("The connection could not be established.\n");
 	}
 
 
 	public void registrationSuccessful() {
-		System.out.println("Registered. Please, login.");
+		System.out.println("Registered. Please, login.\n");
 	}
 
 
@@ -211,12 +211,12 @@ public class GUI implements Runnable {
 
 
 	public void errorAlreadyLoggedIn() {
-		System.out.println("You are already logged in.");
+		System.out.println("You are already logged in.\n");
 	}
 
 
 	public void disconnected() {
-		System.out.println("You are disconnected.");
+		System.out.println("You are disconnected.\n");
 	}
 
 
@@ -231,7 +231,7 @@ public class GUI implements Runnable {
 
 
 	public void errorPostList() {
-		System.out.println("That element does not exist in the post list.");
+		System.out.println("That element does not exist in the post list.\n");
 	}
 
 
@@ -246,11 +246,11 @@ public class GUI implements Runnable {
 
 
 	public void unexpectedContentError() {
-		System.out.println("Received unexpected content.");
+		System.out.println("Received unexpected content.\n");
 	}
 
 
 	public void done() {
-		System.out.println("Done.");
+		System.out.println("Done.\n");
 	}
 }
