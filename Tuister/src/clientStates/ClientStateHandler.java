@@ -65,4 +65,8 @@ public class ClientStateHandler {
 	public void listUsers() {
 		this.currentState = this.currentState.listUsers();
 	}
+
+	public void disconnectedFromServer() {
+		this.currentState = this.currentState.disconnectedFromServer();
+	}
 }

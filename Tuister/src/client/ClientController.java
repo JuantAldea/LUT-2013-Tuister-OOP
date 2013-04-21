@@ -18,7 +18,7 @@ import clientStates.ClientStateHandler;
 public class ClientController implements Runnable {
 	public Semaphore semaphore = new Semaphore(0);
 
-	private String host = "127.0.0.1";
+	private String host = "192.168.1.101";
 	private int port = 27015;
 
 	private SocketChannel socket = null;
@@ -121,6 +121,7 @@ public class ClientController implements Runnable {
 		if (this.socket != null) {
 			try {
 				this.socket.close();
+				this.state.disconnectedFromServer();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

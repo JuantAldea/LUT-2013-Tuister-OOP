@@ -116,8 +116,6 @@ public class ClientModel {
 		            	else if (this.listStatus == 1
 		            			&& name.equalsIgnoreCase("post")){
 		            		
-		            		System.out.println(this.handler.getAttributes().getValue("text"));
-		            		
 		            		Post p = new Post(this.handler.getAttributes().getValue("text"),
 		            				this.handler.getAttributes().getValue("author"),
 		            				Integer.parseInt(this.handler.getAttributes().getValue("likes")),
@@ -160,8 +158,7 @@ public class ClientModel {
 		            	
 		            	else if (this.listStatus == 1
 		            			&& name.equalsIgnoreCase("user")){
-		            		
-		            		// TODO acumula usuarios
+
 		            		User u = new User(this.handler.getAttributes().getValue("username"));
 		            		this.controller.gui.printUser(u);
 		            		
@@ -178,12 +175,11 @@ public class ClientModel {
 		            	else {
 		            		// Unexpected
 		            		// TODO
-		            		
 		            	}
 		            }
 		            
 		            else {
-		            	// Unexpected
+		            	// Unexpected // TODO
 		            }
 		        }
 			}

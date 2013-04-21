@@ -164,17 +164,17 @@ public class GUI implements Runnable {
 			this.printHelp();
 		}
 	}
-	
-	// http://stackoverflow.com/questions/794248/a-method-to-reverse-effect-of-java-string-split
+
 	public static String join(String delimitor, String[] subkeys, int start) {
-	    String result = null;
-	    if(null!=subkeys && subkeys.length>0) {
-	        StringBuffer joinBuffer = new StringBuffer(subkeys[start]);
-	        for(int idx=1;idx<subkeys.length;idx++) {
-	            joinBuffer.append(delimitor).append(subkeys[idx]);
-	        }
-	        result = joinBuffer.toString();
+	    String result = "";
+	    
+	    for (int i = start; i < subkeys.length; i++){
+	    	result += subkeys[i];
+	    	if (i != subkeys.length - 1){
+	    		result += delimitor;
+	    	}
 	    }
+	    
 	    return result;
 	}
 	
