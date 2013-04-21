@@ -1,6 +1,5 @@
 package common;
 
-
 public class Post {
     protected String text;
     protected String author;
@@ -19,9 +18,9 @@ public class Post {
         this.date = date;
         this.id = id;
     }
-    
-    public Integer getId(){
-    	return this.id;
+
+    public Integer getId() {
+        return this.id;
     }
 
     public String toString() {
