@@ -7,13 +7,6 @@ import java.nio.ByteOrder;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-
-import javax.xml.bind.JAXBException;
-
-import org.xml.sax.SAXException;
-
-import pdus.ErrorPDU;
-
 import database.DatabaseWrapper;
 
 import serverStates.ServerWorkerState;

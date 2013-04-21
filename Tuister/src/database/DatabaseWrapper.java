@@ -56,6 +56,8 @@ public class DatabaseWrapper {
             // !results => register new user
             statement.executeUpdate(String.format("insert into users(username, password) values(\"%s\", \"%s\")", username, password));
             queryResults = statement.executeQuery(String.format("select id from users where username = \"%s\"", username));
+            queryResults.next();
+            statement.executeUpdate(String.format("insert into followers  values(%d, %d)", queryResults.getInt("id"), queryResults.getInt("id")));
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -266,11 +268,11 @@ public class DatabaseWrapper {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
             // get feed from followed users and user's posts
-            queryResults = statement.executeQuery(String.format(
-                    "select posts.body, posts.likes, users.username, posts.post_date, posts.id from posts, followers, users where "
-                            + "(posts.author = 1 or (posts.author = followers.followed and followers.follower = 1)) and users.id = posts.author "
-                            + "order by post_date asc", userID, userID));
-
+            queryResults = statement
+                    .executeQuery(String
+                            .format("select posts.body, posts.likes, users.username, posts.post_date, posts.id "
+                                    + "from posts, followers, users where (users.id = posts.author and posts.author = followers.followed and followers.follower = %d) ",
+                                    userID, userID));
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

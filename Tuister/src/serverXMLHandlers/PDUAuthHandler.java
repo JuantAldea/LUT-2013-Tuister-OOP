@@ -14,7 +14,6 @@ import pdus.ErrorPDU;
 import pdus.PostPDU;
 import pdus.UserPDU;
 import server.ServerWorker;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class PDUAuthHandler extends PDUHandler {
 
@@ -136,12 +135,12 @@ public class PDUAuthHandler extends PDUHandler {
     }
 
     protected void onUpdate() {
-        ResultSet rs = this.context.getDatabase().update(this.context.getUserID());
+        ResultSet queryResults = this.context.getDatabase().update(this.context.getUserID());
         LinkedList<String> messages = new LinkedList<String>();
         try {
-            while (rs != null && rs.next()) {
-                PostPDU post = new PostPDU(rs.getString("body"), rs.getString("username"), rs.getInt("likes"), rs.getString("post_date"),
-                        rs.getInt("id"));
+            while (queryResults != null && queryResults.next()) {
+                PostPDU post = new PostPDU(queryResults.getString("body"), queryResults.getString("username"), queryResults.getInt("likes"),
+                        queryResults.getString("post_date"), queryResults.getInt("id"));
                 messages.add(post.toXML());
             }
         } catch (JAXBException e) {
