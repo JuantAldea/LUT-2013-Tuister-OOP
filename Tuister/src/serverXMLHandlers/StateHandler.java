@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 
 import javax.xml.bind.JAXBException;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -53,8 +52,8 @@ abstract public class StateHandler extends DefaultHandler {
         LinkedList<String> messages = new LinkedList<String>();
         try {
             while (rs != null && rs.next()) {
-                PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"),
-                        rs.getDate("post_date"), rs.getInt("id"));
+                PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"), rs.getDate("post_date"),
+                        rs.getInt("id"));
                 messages.add(post.toXML());
             }
         } catch (JAXBException e) {
@@ -67,6 +66,5 @@ abstract public class StateHandler extends DefaultHandler {
         this.sendList(messages, "posts");
     }
 
-    abstract public void startElement(String uri, String localName, String qName, Attributes attributes)
-            throws SAXException;
+    abstract public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException;
 }
