@@ -24,7 +24,7 @@ public class PDUUnauthHandler extends PDUHandler {
             }
             // try to register the user
             boolean result = this.context.getDatabase().registerUser(attributes.getValue("username"), attributes.getValue("password"));
-            if (!result) {
+            if (result) {
                 this.context.send(new AckPDU("register").toXML());
             } else {
                 this.context.send(new ErrorPDU("Username already in use").toXML());

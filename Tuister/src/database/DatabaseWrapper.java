@@ -281,7 +281,8 @@ public class DatabaseWrapper {
             queryResults = statement
                     .executeQuery(String
                             .format("select posts.body, posts.likes, users.username, posts.post_date, posts.id "
-                                    + "from posts, followers, users where (users.id = posts.author and posts.author = followers.followed and followers.follower = %d) ",
+                                    + "from posts, followers, users where (users.id = posts.author and posts.author = followers.followed and followers.follower = %d) " +
+                                    "order by posts.post_date asc",
                                     userID, userID));
         } catch (SQLException e) {
             // TODO Auto-generated catch block
