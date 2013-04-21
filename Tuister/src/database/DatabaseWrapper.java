@@ -1,9 +1,5 @@
 package database;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -30,7 +26,6 @@ public class DatabaseWrapper {
             connection = DriverManager.getConnection("jdbc:sqlite:tuister2.db");
             this.initDatabase();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         System.out.println("Connection: " + connection);
