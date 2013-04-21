@@ -51,7 +51,7 @@ public class MainTests {
 
         System.out.println("----------------------Server---------------");
 
-        PostPDU postPDU = new PostPDU("Necesitamos mas minerales", "Manolito", new Integer(1337), new Date(), new Integer(42));
+        PostPDU postPDU = new PostPDU("Necesitamos mas minerales", "Manolito", new Integer(1337), "CON FECHA DE HOY", new Integer(42));
         System.out.println(postPDU.toXML());
         ErrorPDU error = new ErrorPDU("No puedo contruir ahi");
         System.out.println(error.toXML());

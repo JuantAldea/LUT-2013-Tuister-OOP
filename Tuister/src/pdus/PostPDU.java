@@ -1,6 +1,5 @@
 package pdus;
 
-import java.util.Date;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -12,11 +11,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 public class PostPDU extends PDU {
 
     @XmlAttribute(name = "text")
-    protected String  text;
+    protected String text;
     @XmlAttribute(name = "author")
-    protected String  author;
+    protected String author;
     @XmlAttribute(name = "date")
-    protected Date    date;
+    protected String date;
     @XmlAttribute(name = "likes")
     protected Integer likes;
     @XmlAttribute(name = "id")
@@ -26,7 +25,7 @@ public class PostPDU extends PDU {
     private PostPDU() {
     }
 
-    public PostPDU(String text, String author, Integer likes, Date date, Integer id) {
+    public PostPDU(String text, String author, Integer likes, String date, Integer id) {
         this.text = text;
         this.author = author;
         this.date = date;

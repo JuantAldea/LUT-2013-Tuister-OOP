@@ -14,11 +14,11 @@ import pdus.ListEndPDU;
 import pdus.PostPDU;
 import server.ServerWorker;
 
-abstract public class StateHandler extends DefaultHandler {
+abstract public class PDUHandler extends DefaultHandler {
     protected ServerWorker context = null;
 
     @SuppressWarnings("unused")
-    private StateHandler() {
+    private PDUHandler() {
 
     }
 
@@ -42,7 +42,7 @@ abstract public class StateHandler extends DefaultHandler {
 
     }
 
-    public StateHandler(ServerWorker context) {
+    public PDUHandler(ServerWorker context) {
         this.context = context;
         this.context.getDatabase();
     }
@@ -52,7 +52,7 @@ abstract public class StateHandler extends DefaultHandler {
         LinkedList<String> messages = new LinkedList<String>();
         try {
             while (rs != null && rs.next()) {
-                PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"), rs.getDate("post_date"),
+                PostPDU post = new PostPDU(rs.getString("body"), attributes.getValue("username"), rs.getInt("likes"), rs.getString("post_date"),
                         rs.getInt("id"));
                 messages.add(post.toXML());
             }

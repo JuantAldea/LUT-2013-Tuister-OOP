@@ -8,7 +8,11 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
+import javax.xml.bind.JAXBException;
+
 import org.xml.sax.SAXException;
+
+import pdus.ErrorPDU;
 
 import database.DatabaseWrapper;
 
@@ -103,12 +107,7 @@ public class ServerWorker implements Runnable {
                     buf.clear();
                     String pdu = new String(byteArray);
                     System.out.println(pdu);
-                    try {
-                        this.state.process(new ByteArrayInputStream(byteArray));
-                    } catch (SAXException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    this.state.process(new ByteArrayInputStream(byteArray));
                 } else {
                     // socket not connected, finish everything
                     running = false;
@@ -126,8 +125,6 @@ public class ServerWorker implements Runnable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        System.out.println("Thread muere");
     }
 
 }

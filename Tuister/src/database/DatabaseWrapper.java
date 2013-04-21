@@ -250,7 +250,7 @@ public class DatabaseWrapper {
                 return null;
             }
             // results => get user's posts
-            queryResults = statement.executeQuery(String.format("select * from posts where author=%d order by posts.date asc",
+            queryResults = statement.executeQuery(String.format("select * from posts where author=%d order by posts.post_date asc",
                     queryResults.getInt("id")));
         } catch (SQLException e) {
             e.printStackTrace();

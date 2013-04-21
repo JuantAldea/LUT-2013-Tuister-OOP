@@ -9,65 +9,49 @@ import pdus.AckPDU;
 import pdus.ErrorPDU;
 import server.ServerWorker;
 
-public class PDUUnauthHandler extends StateHandler {
+public class PDUUnauthHandler extends PDUHandler {
 
     public PDUUnauthHandler(ServerWorker context) {
         super(context);
     }
 
-    protected Integer onRegister(Attributes attributes) {
-        Integer userID = -1;
-
-        if (attributes.getValue("password").length() <= 0) {
-            try {
+    protected boolean onRegister(Attributes attributes) {
+        try {
+            if (attributes.getValue("password").length() <= 0) {
                 this.context.send(new ErrorPDU("Invalid password").toXML());
                 this.context.stop();
-            } catch (JAXBException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                return false;
             }
-            return userID;
-        }
-
-        userID = this.context.getDatabase().registerUser(attributes.getValue("username"),
-                attributes.getValue("password"));
-        if (userID != -1) {
-            try {
+            // try to register the user
+            boolean result = this.context.getDatabase().registerUser(attributes.getValue("username"), attributes.getValue("password"));
+            if (!result) {
                 this.context.send(new AckPDU("register").toXML());
-            } catch (JAXBException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-            try {
+            } else {
                 this.context.send(new ErrorPDU("Username already in use").toXML());
                 this.context.stop();
-            } catch (JAXBException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                return false;
             }
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
-        return userID;
+        this.context.stop();
+        return true;
     }
 
     protected void onLogin(Attributes attributes) {
-        Integer id = this.context.getDatabase().login(attributes.getValue("username"), attributes.getValue("password"));
-        if (id != -1) {
-            this.context.setUserID(id);
-            this.context.changeStateToAuthenticated();
-            try {
-                this.context.send(new AckPDU("login").toXML());
-            } catch (JAXBException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-            try {
+        Integer userID = this.context.getDatabase().login(attributes.getValue("username"), attributes.getValue("password"));
+        try {
+            // invalid user id => wrong login data
+            if (userID == -1) {
                 this.context.send(new ErrorPDU("Username or password invalid").toXML());
-            } catch (JAXBException e) {
-                e.printStackTrace();
+                this.context.stop();
+                return;
             }
-            this.context.stop();
+            this.context.setUserID(userID);
+            this.context.changeStateToAuthenticated();
+            this.context.send(new AckPDU("login").toXML());
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
     }
 
